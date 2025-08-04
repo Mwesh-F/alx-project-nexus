@@ -1,5 +1,7 @@
-import "../styles/globals.css";
-import Navbar from "@/components/Navbar";
+import "../../styles/globals.css";
+import Navbar from "../../components/Navbar";
+
+
 
 export const metadata = {
   title: "CrownVote - Vote Miss County & Miss Kenya",
