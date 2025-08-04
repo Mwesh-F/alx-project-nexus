@@ -21,7 +21,7 @@ const PollsPage = () => {
   const [selected, setSelected] = useState<{ [key: string]: number | null }>({});
   const [submittedPolls, setSubmittedPolls] = useState<string[]>([]);
 
-  // Load votes and submissions from localStorage
+  // Load from localStorage
   useEffect(() => {
     const storedVotes = localStorage.getItem('votes');
     const storedSubmitted = localStorage.getItem('submittedPolls');
@@ -30,7 +30,7 @@ const PollsPage = () => {
     if (storedSubmitted) setSubmittedPolls(JSON.parse(storedSubmitted));
   }, []);
 
-  // Save votes and submittedPolls to localStorage on change
+  // Save to localStorage
   useEffect(() => {
     localStorage.setItem('votes', JSON.stringify(votes));
     localStorage.setItem('submittedPolls', JSON.stringify(submittedPolls));
@@ -40,7 +40,10 @@ const PollsPage = () => {
     const selectedIndex = selected[pollId];
     if (selectedIndex === null || selectedIndex === undefined) return;
 
-    const pollVotes = votes[pollId] || Array(pollData.find(p => p.id === pollId)!.options.length).fill(0);
+    const poll = pollData.find(p => p.id === pollId);
+    if (!poll) return;
+
+    const pollVotes = votes[pollId] || Array(poll.options.length).fill(0);
     const updatedVotes = [...pollVotes];
     updatedVotes[selectedIndex] += 1;
 
@@ -83,6 +86,40 @@ const PollsPage = () => {
                 <button
                   onClick={() => handleVote(poll.id)}
                   disabled={selected[poll.id] === null || selected[poll.id] === undefined}
-                  className="mt-2 bg-primary text-white px-6 py-2 rounded hover:bg-primary-dark disabled:opacity-50"
+                  className="mt-2 bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
                 >
                   Submit Vote
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <p className="text-green-600 font-medium">You already voted on this!</p>
+                {poll.options.map((option, index) => {
+                  const count = pollVotes[index];
+                  const percent = total > 0 ? Math.round((count / total) * 100) : 0;
+
+                  return (
+                    <div key={index} className="mb-2">
+                      <div className="flex justify-between">
+                        <span>{option}</span>
+                        <span>{count} votes ({percent}%)</span>
+                      </div>
+                      <div className="w-full bg-gray-200 h-3 rounded">
+                        <div
+                          className="bg-blue-600 h-3 rounded"
+                          style={{ width: `${percent}%` }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </section>
+  );
+};
+
+export default PollsPage;
