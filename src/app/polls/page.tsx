@@ -1,13 +1,23 @@
-export default function PollsPage() {
+const PollsPage = () => {
   return (
-    <main className="p-4">
-      <h1 className="text-3xl font-semibold mb-2">Active Polls</h1>
-      <p className="text-gray-600 mb-4">Choose your favorite contestant below:</p>
+    <section className="max-w-4xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-4 text-center">Vote for Your Favorite Contestant</h1>
+      <p className="text-gray-600 mb-8 text-center">
+        Select your preferred contestant and cast your vote. One vote per category.
+      </p>
 
-      {/* Placeholder for polls list */}
-      <div className="border border-dashed border-gray-400 p-6 text-center text-gray-500 rounded-md">
-        Polls will appear here once available.
+      {/* Placeholder for voting cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* VotingCard component(s) will go here in future */}
+        <div className="p-4 border rounded shadow text-center">
+          <p className="font-semibold">Contestant Name</p>
+          <button className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+            Vote
+          </button>
+        </div>
       </div>
-    </main>
+    </section>
   );
-}
+};
+
+export default PollsPage;
