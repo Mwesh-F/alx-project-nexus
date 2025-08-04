@@ -1,16 +1,19 @@
-// src/app/about/page.tsx
-export default function AboutPage() {
+const AboutPage = () => {
   return (
-    <main className="p-4 max-w-3xl mx-auto">
-      <h1 className="text-3xl font-semibold mb-4">About CrownVote</h1>
-      <p className="text-gray-700 mb-2">
-        CrownVote is a transparent and secure online voting system designed for Miss County and Miss Kenya
-        pageants. Our mission is to ensure every vote counts and to celebrate beauty, talent, and community impact.
+    <section className="max-w-4xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-4 text-center">About CrownVote</h1>
+      <p className="text-gray-700 mb-6 text-center">
+        CrownVote is a transparent and inclusive online poll system designed to
+        promote fairness and excitement in the Miss County and Miss Kenya
+        pageants.
       </p>
-      <p className="text-gray-700">
-        Built with modern web technologies, CrownVote ensures a seamless and engaging voting experience for users
-        across Kenya.
+      <p className="text-gray-700 text-center">
+        Our platform ensures every vote counts and gives everyone a voice in
+        choosing the next crown bearer. Join us in celebrating beauty, culture,
+        and talent from all corners of Kenya.
       </p>
-    </main>
+    </section>
   );
-}
+};
+
+export default AboutPage;
