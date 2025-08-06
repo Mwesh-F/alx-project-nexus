@@ -290,6 +290,76 @@ export default function AboutPage() {
           </div>
         </div>
 
+        {/* FAQ Section */}
+        <div className="max-w-5xl mx-auto mt-16 mb-12">
+          <div className="bg-[#FCFCFC] rounded-2xl shadow p-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-gray-900">
+              Frequently Asked Questions
+            </h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div>
+                <div className="mb-6">
+                  <div className="font-semibold text-gray-900 mb-1">How do I vote in the Miss Kenya pageant?</div>
+                  <div className="text-gray-700 text-sm">
+                    To vote, create an account on CrownVote, navigate to the active polls section, and follow the instructions to cast your vote for your favorite contestant.
+                  </div>
+                </div>
+                <div className="mb-6">
+                  <div className="font-semibold text-gray-900 mb-1">How can I become a contestant?</div>
+                  <div className="text-gray-700 text-sm">
+                    For information about becoming a contestant, please contact the Miss Kenya organization directly at contestants@misskenya.co.ke.
+                  </div>
+                </div>
+                <div className="mb-6">
+                  <div className="font-semibold text-gray-900 mb-1">Can I change my vote after submitting?</div>
+                  <div className="text-gray-700 text-sm">
+                    No, once your vote is submitted, it cannot be changed. Please review your selection carefully before confirming your vote.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div className="mb-6">
+                  <div className="font-semibold text-gray-900 mb-1">Can I vote multiple times?</div>
+                  <div className="text-gray-700 text-sm">
+                    Our voting system allows one vote per registered user per day. This ensures fairness while still allowing supporters to show continued support.
+                  </div>
+                </div>
+                <div className="mb-6">
+                  <div className="font-semibold text-gray-900 mb-1">How quickly will I receive a response to my inquiry?</div>
+                  <div className="text-gray-700 text-sm">
+                    We aim to respond to all inquiries within 24-48 hours during business days. For urgent matters, please call our support line.
+                  </div>
+                </div>
+                <div className="mb-6">
+                  <div className="font-semibold text-gray-900 mb-1">Is CrownVote free to use?</div>
+                  <div className="text-gray-700 text-sm">
+                    Yes, CrownVote is free for all voters and contestants. Our mission is to make pageant voting accessible and transparent for everyone.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Our Location Section */}
+        <div className="max-w-4xl mx-auto mb-16">
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-6 text-gray-900">
+            Our Location
+          </h2>
+          <div className="rounded-2xl overflow-hidden shadow-lg">
+            <iframe
+              title="CrownVote Office Location"
+              src="https://www.google.com/maps/place/Westlands+Business+Park/@-1.2692028,36.8073297,17z/data=!3m1!4b1!4m6!3m5!1s0x182f173bc3ef9e25:0xf27a160c394bcdee!8m2!3d-1.2692028!4d36.8099046!16s%2Fg%2F11gg6zv3z8?entry=ttu&g_ep=EgoyMDI1MDgwMy4wIKXMDSoASAFQAw%3D%3D"
+              width="100%"
+              height="350"
+              style={{ border: 0 }}
+              allowFullScreen={true}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+        </div>
+
         {/* Call to Action */}
         <div className="text-center mt-16 mb-8">
           <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">
