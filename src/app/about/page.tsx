@@ -134,6 +134,105 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
+        {/* Meet Our Team Section */}
+        <div className="mt-16">
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-10 text-gray-900">
+            Meet Our Team
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+            {/* Team Member 1 */}
+            <div className="bg-white rounded-2xl shadow p-6 flex flex-col items-center">
+              <img
+                src="/james-mwangi.jpg"
+                alt="James Mwangi"
+                className="w-32 h-32 rounded-xl object-cover mb-4"
+              />
+              <div className="text-lg font-bold text-gray-900">James Mwangi</div>
+              <div className="text-sm text-[#FF5A5F] font-semibold mb-2">CEO &amp; Founder</div>
+              <p className="text-gray-700 text-sm text-center mb-3">
+                Former pageant organizer with a vision to bring transparency to the industry through technology.
+              </p>
+              <div className="flex gap-3">
+                <a href="#" aria-label="LinkedIn" className="text-gray-400 hover:text-[#FF5A5F]"><i className="fab fa-linkedin"></i></a>
+                <a href="#" aria-label="Twitter" className="text-gray-400 hover:text-[#FF5A5F]"><i className="fab fa-twitter"></i></a>
+              </div>
+            </div>
+            {/* Team Member 2 */}
+            <div className="bg-white rounded-2xl shadow p-6 flex flex-col items-center">
+              <img
+                src="/wanjiku-njeri.jpg"
+                alt="Wanjiku Njeri"
+                className="w-32 h-32 rounded-xl object-cover mb-4"
+              />
+              <div className="text-lg font-bold text-gray-900">Wanjiku Njeri</div>
+              <div className="text-sm text-[#FF5A5F] font-semibold mb-2">CTO</div>
+              <p className="text-gray-700 text-sm text-center mb-3">
+                Tech innovator with expertise in building secure voting systems and real-time analytics platforms.
+              </p>
+              <div className="flex gap-3">
+                <a href="#" aria-label="GitHub" className="text-gray-400 hover:text-[#FF5A5F]"><i className="fab fa-github"></i></a>
+              </div>
+            </div>
+            {/* Team Member 3 */}
+            <div className="bg-white rounded-2xl shadow p-6 flex flex-col items-center">
+              <img
+                src="/daniel-ochieng.jpg"
+                alt="Daniel Ochieng"
+                className="w-32 h-32 rounded-xl object-cover mb-4"
+              />
+              <div className="text-lg font-bold text-gray-900">Daniel Ochieng</div>
+              <div className="text-sm text-[#FF5A5F] font-semibold mb-2">Marketing Director</div>
+              <p className="text-gray-700 text-sm text-center mb-3">
+                Digital marketing specialist focused on expanding CrownVote’s reach across all Kenyan counties.
+              </p>
+              <div className="flex gap-3">
+                <a href="#" aria-label="LinkedIn" className="text-gray-400 hover:text-[#FF5A5F]"><i className="fab fa-linkedin"></i></a>
+              </div>
+            </div>
+            {/* Team Member 4 */}
+            <div className="bg-white rounded-2xl shadow p-6 flex flex-col items-center">
+              <img
+                src="/aisha-mohamed.jpg"
+                alt="Aisha Mohamed"
+                className="w-32 h-32 rounded-xl object-cover mb-4"
+              />
+              <div className="text-lg font-bold text-gray-900">Aisha Mohamed</div>
+              <div className="text-sm text-[#FF5A5F] font-semibold mb-2">Community Manager</div>
+              <p className="text-gray-700 text-sm text-center mb-3">
+                Former Miss Mombasa who now bridges the gap between pageant contestants and the voting platform.
+              </p>
+              <div className="flex gap-3">
+                <a href="#" aria-label="Instagram" className="text-gray-400 hover:text-[#FF5A5F]"><i className="fab fa-instagram"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Vision for the Future Section */}
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">Our Vision for the Future</h2>
+            <p className="text-gray-700 mb-4">
+              CrownVote is committed to expanding our platform across all pageant ecosystems in Kenya. We envision a future where every beauty competition in the country—from local county pageants to national events—utilizes our transparent voting technology.
+            </p>
+            <p className="text-gray-700 mb-4">
+              <span className="font-semibold">By 2025, we aim to:</span>
+            </p>
+            <ul className="list-disc list-inside space-y-2 text-gray-700 ml-4">
+              <li className="flex items-start"><span className="text-[#FF5A5F] mr-2">➔</span>Partner with all 47 county pageants to create a unified voting experience</li>
+              <li className="flex items-start"><span className="text-[#FF5A5F] mr-2">➔</span>Launch a mobile app to further increase accessibility for voters</li>
+              <li className="flex items-start"><span className="text-[#FF5A5F] mr-2">➔</span>Introduce AI-powered analytics to help contestants improve their performance</li>
+              <li className="flex items-start"><span className="text-[#FF5A5F] mr-2">➔</span>Expand to neighboring East African countries, starting with Uganda and Tanzania</li>
+            </ul>
+          </div>
+          <div className="flex justify-center">
+            <img
+              src="/africa-map.png"
+              alt="Africa Map"
+              className="rounded-2xl shadow-lg w-full max-w-xs object-cover"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
