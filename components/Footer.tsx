@@ -1,6 +1,10 @@
+'use client';
+
 import Link from "next/link";
+import React from "react";
 
 const Footer = () => {
+  const year = React.useMemo(() => new Date().getFullYear(), []);
   return (
     <footer className="bg-gray-900 text-white">
       {/* Main Footer Content */}
@@ -131,7 +135,7 @@ const Footer = () => {
               </Link>
             </div>
             <div className="text-sm text-gray-400">
-              &copy; {new Date().getFullYear()} CrownVote Kenya. All rights reserved.
+              &copy; {year} CrownVote Kenya. All rights reserved.
             </div>
           </div>
         </div>

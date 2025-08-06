@@ -1,8 +1,9 @@
+'use client';
+
 import "../../styles/globals.css";
 import Navbar from "../../components/Header";
 import Footer from "../../components/Footer";
-import { Provider } from "react-redux";
-import { store } from "../store/store";
+import ClientProviders from "./ClientProviders";
 
 export const metadata = {
   title: "CrownVote - Miss Kenya Pageant Polls",
@@ -13,11 +14,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className="min-h-screen flex flex-col font-sans" suppressHydrationWarning={true}>
-        <Provider store={store}>
+        <ClientProviders>
           <Navbar />
           <main className="flex-grow">{children}</main>
           <Footer />
-        </Provider>
+        </ClientProviders>
       </body>
     </html>
   );
