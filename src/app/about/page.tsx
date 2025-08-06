@@ -233,6 +233,75 @@ export default function AboutPage() {
             />
           </div>
         </div>
+
+        {/* Join Our Journey & Digital Engagement Commitment */}
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Join Our Journey Card */}
+          <div className="bg-[#FFE5E5] rounded-xl p-6 shadow flex flex-col justify-between">
+            <div>
+              <h3 className="text-xl font-bold text-[#FF5A5F] mb-2">Join Our Journey</h3>
+              <p className="text-gray-700 mb-4">
+                We're always looking for partners, investors, and team members who share our vision for transparent pageant voting.
+              </p>
+            </div>
+            <a
+              href="/contact"
+              className="text-[#FF5A5F] font-semibold hover:underline mt-2"
+            >
+              Contact Us
+            </a>
+          </div>
+          {/* Digital Engagement Commitment */}
+          <div className="bg-white rounded-xl p-6 shadow">
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Our Digital Engagement Commitment</h3>
+            <p className="text-gray-700 mb-4">
+              CrownVote is dedicated to creating an engaging digital experience that connects pageant contestants with voters across Kenya. We leverage technology to:
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="flex items-start gap-3">
+                <span className="text-[#FF5A5F] text-2xl mt-1">📱</span>
+                <div>
+                  <div className="font-semibold text-gray-900">Mobile Accessibility</div>
+                  <div className="text-gray-700 text-sm">Optimized for all devices to ensure everyone can vote</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="text-[#FF5A5F] text-2xl mt-1">⏱️</span>
+                <div>
+                  <div className="font-semibold text-gray-900">Real-time Results</div>
+                  <div className="text-gray-700 text-sm">Live updates keep audiences engaged throughout the competition</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="text-[#FF5A5F] text-2xl mt-1">🛡️</span>
+                <div>
+                  <div className="font-semibold text-gray-900">Secure Voting</div>
+                  <div className="text-gray-700 text-sm">Advanced security measures prevent fraud and ensure integrity</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="text-[#FF5A5F] text-2xl mt-1">🤝</span>
+                <div>
+                  <div className="font-semibold text-gray-900">Community Building</div>
+                  <div className="text-gray-700 text-sm">Creating connections between contestants and supporters</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Call to Action */}
+        <div className="text-center mt-16 mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">
+            Ready to Experience CrownVote?
+          </h2>
+          <a
+            href="/contact"
+            className="text-[#FF5A5F] font-semibold hover:underline text-lg"
+          >
+            Contact Us
+          </a>
+        </div>
       </div>
     </div>
   );
