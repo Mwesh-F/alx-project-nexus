@@ -68,13 +68,15 @@ const PollsPage = () => {
   const [lastUpdated, setLastUpdated] = useState(new Date());
   const [finale, setFinale] = useState({
     title: "Miss Kenya 2023 Grand Finale",
-    date: "",
-    time: "",
-    location: "",
-    broadcast: "",
-    voteCloses: "",
+    description: "Join us for the spectacular crowning event at the Kenyatta International Convention Centre on June 30th, 2023. Witness the culmination of months of competition as we crown the new Miss Kenya 2023.",
+    date: "2023-06-30",
+    time: "19:00",
+    location: "KICC, Nairobi",
+    broadcast: "KTN Home, YouTube Live",
+    voteCloses: "2023-06-30T18:00:00",
     imageUrl: "/stage-event.jpg",
   });
+  const [countdown, setCountdown] = useState("");
   const contestants = useSelector((state: RootState) => state.contestants.contestants);
   const dispatch = useDispatch();
 
@@ -171,6 +173,23 @@ const PollsPage = () => {
   } = useContestantForm<ContestantFormData>({
     resolver: zodContestantResolver(contestantSchema),
   });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const finaleDate = new Date(`${finale.date}T${finale.time}:00`);
+      const diff = finaleDate.getTime() - new Date().getTime();
+      if (diff > 0) {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const mins = Math.floor((diff / (1000 * 60)) % 60);
+        const secs = Math.floor((diff / 1000) % 60);
+        setCountdown(`${days} days ${hours.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`);
+      } else {
+        setCountdown("Contest ended");
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [finale]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
@@ -669,6 +688,147 @@ const PollsPage = () => {
           </div>
         </div>
       )}
+
+      {/* Upcoming Contest Finale */}
+      <div className="bg-[#FFE5E5] rounded-2xl shadow p-6 mb-10">
+        <div className="flex flex-col md:flex-row gap-6 items-center">
+          <img
+            src={finale.imageUrl}
+            alt={finale.title}
+            className="rounded-xl w-full md:w-72 h-44 object-cover"
+          />
+          <div className="flex-1">
+            <div className="flex justify-between items-center mb-2">
+              <h2 className="text-xl font-bold text-gray-900">{finale.title}</h2>
+              <span className="text-xs text-red-500 flex items-center gap-1">
+                <span className="text-lg">⏰</span>
+                Countdown: {countdown}
+              </span>
+            </div>
+            <p className="text-gray-700 mb-3">{finale.description}</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm mb-2">
+              <div>
+                <span className="font-semibold text-gray-900">Date &amp; Time</span>
+                <div>{new Date(`${finale.date}T${finale.time}`).toLocaleString("en-KE", { dateStyle: "medium", timeStyle: "short" })} EAT</div>
+              </div>
+              <div>
+                <span className="font-semibold text-gray-900">Location</span>
+                <div>{finale.location}</div>
+              </div>
+              <div>
+                <span className="font-semibold text-gray-900">Broadcast</span>
+                <div>{finale.broadcast}</div>
+              </div>
+              <div>
+                <span className="font-semibold text-gray-900">Voting Closes</span>
+                <div>{new Date(finale.voteCloses).toLocaleString("en-KE", { dateStyle: "medium", timeStyle: "short" })} EAT</div>
+              </div>
+            </div>
+            <div className="flex gap-3 mt-2">
+              <button className="bg-[#FF5A5F] hover:bg-[#E31C5F] text-white px-5 py-2 rounded-lg font-semibold transition-all duration-200">
+                Vote Now
+              </button>
+              <button className="bg-[#FFD6D6] hover:bg-[#FFB3B3] text-[#FF5A5F] px-5 py-2 rounded-lg font-semibold transition-all duration-200">
+                Get Tickets
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats, Share, Help */}
+      <div className="grid md:grid-cols-3 gap-6 mb-10">
+        {/* Voting Statistics */}
+        <div className="bg-white rounded-2xl shadow p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="text-[#FF5A5F] text-xl">📊</span>
+            <span className="font-bold text-gray-900">Voting Statistics</span>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <div className="text-2xl font-extrabold text-[#FF5A5F]">{filteredContestants.reduce((sum, c) => sum + c.votes, 0).toLocaleString()}</div>
+              <div className="text-gray-700 text-xs">Total Votes</div>
+            </div>
+            <div>
+              <div className="text-2xl font-extrabold text-[#FF5A5F]">47</div>
+              <div className="text-gray-700 text-xs">Counties Participating</div>
+            </div>
+            <div>
+              <div className="text-2xl font-extrabold text-[#FF5A5F]">18,452</div>
+              <div className="text-gray-700 text-xs">Unique Voters</div>
+            </div>
+            <div>
+              <div className="text-2xl font-extrabold text-[#FF5A5F]">1,245</div>
+              <div className="text-gray-700 text-xs">Votes Today</div>
+            </div>
+          </div>
+        </div>
+        {/* Share Results */}
+        <div className="bg-white rounded-2xl shadow p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="text-[#FF5A5F] text-xl">🔗</span>
+            <span className="font-bold text-gray-900">Share Results</span>
+          </div>
+          <p className="text-gray-700 text-sm mb-3">
+            Help your favorite contestant by sharing these results with friends and family.
+          </p>
+          <div className="flex gap-2 mb-3">
+            <a
+              href={`https://www.facebook.com/sharer/sharer.php?u=https://crownvote.co.ke/results/miss-kenya-2023`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#1877F3] text-white px-3 py-1 rounded font-semibold text-xs"
+            >
+              Facebook
+            </a>
+            <a
+              href={`https://twitter.com/intent/tweet?url=https://crownvote.co.ke/results/miss-kenya-2023&text=Check%20out%20the%20Miss%20Kenya%202023%20live%20results!`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#1DA1F2] text-white px-3 py-1 rounded font-semibold text-xs"
+            >
+              Twitter
+            </a>
+            <a
+              href={`https://wa.me/?text=Check%20out%20the%20Miss%20Kenya%202023%20live%20results!%20https://crownvote.co.ke/results/miss-kenya-2023`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#25D366] text-white px-3 py-1 rounded font-semibold text-xs"
+            >
+              WhatsApp
+            </a>
+          </div>
+          <input
+            type="text"
+            readOnly
+            value="https://crownvote.co.ke/results/miss-kenya-2023"
+            className="w-full px-2 py-1 border border-gray-200 rounded text-xs bg-gray-50"
+          />
+        </div>
+        {/* Need Help */}
+        <div className="bg-white rounded-2xl shadow p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="text-[#FF5A5F] text-xl">❓</span>
+            <span className="font-bold text-gray-900">Need Help?</span>
+          </div>
+          <p className="text-gray-700 text-sm mb-3">
+            Have questions about the voting process or results? We're here to help!
+          </p>
+          <ul className="mb-4 space-y-1 text-sm">
+            <li className="flex items-center gap-2 text-green-600"><span>✔️</span> Secure and transparent voting system</li>
+            <li className="flex items-center gap-2 text-green-600"><span>✔️</span> Real-time results and updates</li>
+            <li className="flex items-center gap-2 text-green-600"><span>✔️</span> 24/7 customer support</li>
+          </ul>
+          <div className="flex gap-2">
+            <Link href="/about">
+              <button className="bg-[#FFE5E5] text-[#FF5A5F] px-4 py-2 rounded font-semibold text-xs hover:bg-[#FFD6D6]">About Us</button>
+            </Link>
+            <Link href="/contact">
+              <button className="bg-[#FFE5E5] text-[#FF5A5F] px-4 py-2 rounded font-semibold text-xs hover:bg-[#FFD6D6]">Contact Us</button>
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
