@@ -1,19 +1,37 @@
-const ResultsPage = () => {
-  return (
-    <section className="max-w-4xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4 text-center">Live Results</h1>
-      <p className="text-gray-600 mb-8 text-center">
-        Track votes in real-time and see who’s leading in each category.
-      </p>
+'use client';
 
-      {/* Placeholder for results */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="p-4 border rounded shadow text-center">
-          <p className="font-semibold mb-2">Contestant Name</p>
-          <p className="text-lg font-bold text-blue-600">45%</p>
-        </div>
-      </div>
-    </section>
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
+const COLORS = ['#FF5A5F', '#00C49F', '#FFBB28', '#0088FE', '#FF8042', '#A28EFF', '#FF6F91'];
+
+const ResultsPage = () => {
+  const contestants = useSelector((state: RootState) => state.contestants.contestants);
+
+  return (
+    <div className="max-w-4xl mx-auto py-10">
+      <h1 className="text-3xl font-bold mb-8 text-center">Live Voting Results</h1>
+      <ResponsiveContainer width="100%" height={400}>
+        <PieChart>
+          <Pie
+            data={contestants}
+            dataKey="votes"
+            nameKey="name"
+            cx="50%"
+            cy="50%"
+            outerRadius={150}
+            label
+          >
+            {contestants.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            ))}
+          </Pie>
+          <Tooltip />
+          <Legend />
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
   );
 };
 
