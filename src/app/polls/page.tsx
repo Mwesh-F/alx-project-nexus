@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
-import { voteForContestant, resetVotes } from '../../store/contestantsSlice';
+import { voteForContestant, resetVotes, addContestant } from '../../store/contestantsSlice';
 import { addVote } from '../../store/votesSlice';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -15,6 +15,7 @@ const PollsPage = () => {
   const [activeTab, setActiveTab] = useState<'voter' | 'admin'>('voter');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
+  const [newContestant, setNewContestant] = useState({ name: '', bio: '', photoUrl: '' });
   const contestants = useSelector((state: RootState) => state.contestants.contestants);
   const dispatch = useDispatch();
 
@@ -64,6 +65,12 @@ const PollsPage = () => {
     } else {
       alert('Invalid admin credentials.');
     }
+  };
+
+  const handleAddContestant = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(addContestant(newContestant));
+    setNewContestant({ name: '', bio: '', photoUrl: '' });
   };
 
   const allowedVoters = [
@@ -353,6 +360,53 @@ const PollsPage = () => {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Add Contestant Form - Admin Only */}
+        {isAdminAuthenticated && (
+          <div className="mt-12">
+            <h2 className="text-3xl font-bold mb-6 text-center">Add New Contestant</h2>
+            <form
+              className="mb-8 flex flex-col md:flex-row items-center gap-4 justify-center"
+              onSubmit={e => {
+                e.preventDefault();
+                if (!newContestant.name || !newContestant.bio || !newContestant.photoUrl) {
+                  alert('Please fill in all fields.');
+                  return;
+                }
+                dispatch(addContestant(newContestant));
+                setNewContestant({ name: '', bio: '', photoUrl: '' });
+              }}
+            >
+              <input
+                type="text"
+                placeholder="Name"
+                className="px-3 py-2 border rounded"
+                value={newContestant.name}
+                onChange={e => setNewContestant({ ...newContestant, name: e.target.value })}
+              />
+              <input
+                type="text"
+                placeholder="Bio"
+                className="px-3 py-2 border rounded"
+                value={newContestant.bio}
+                onChange={e => setNewContestant({ ...newContestant, bio: e.target.value })}
+              />
+              <input
+                type="text"
+                placeholder="Photo URL"
+                className="px-3 py-2 border rounded"
+                value={newContestant.photoUrl}
+                onChange={e => setNewContestant({ ...newContestant, photoUrl: e.target.value })}
+              />
+              <button
+                type="submit"
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded font-semibold"
+              >
+                Add Contestant
+              </button>
+            </form>
           </div>
         )}
       </div>

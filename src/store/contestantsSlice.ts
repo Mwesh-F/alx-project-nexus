@@ -47,8 +47,18 @@ const contestantsSlice = createSlice({
     resetVotes(state) {
       state.contestants.forEach(c => { c.votes = 0; });
     },
+    addContestant(state, action: PayloadAction<{ name: string; bio: string; photoUrl: string }>) {
+      const newContestant = {
+        id: (Date.now() + Math.random()).toString(),
+        name: action.payload.name,
+        bio: action.payload.bio,
+        photoUrl: action.payload.photoUrl,
+        votes: 0,
+      };
+      state.contestants.push(newContestant);
+    },
   },
 });
 
-export const { setContestants, voteForContestant, resetVotes } = contestantsSlice.actions;
+export const { setContestants, voteForContestant, resetVotes, addContestant } = contestantsSlice.actions;
 export default contestantsSlice.reducer;
