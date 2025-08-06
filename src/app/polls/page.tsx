@@ -14,6 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 const PollsPage = () => {
   const [activeTab, setActiveTab] = useState<'voter' | 'admin'>('voter');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
   const contestants = useSelector((state: RootState) => state.contestants.contestants);
   const dispatch = useDispatch();
 
@@ -49,10 +50,31 @@ const PollsPage = () => {
     }
   };
 
+  const handleAdminLogin = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const username = formData.get('adminUsername');
+    const password = formData.get('adminPassword');
+    if (
+      username === adminCredentials.username &&
+      password === adminCredentials.password
+    ) {
+      setIsAdminAuthenticated(true);
+      alert('Admin login successful!');
+    } else {
+      alert('Invalid admin credentials.');
+    }
+  };
+
   const allowedVoters = [
     { email: 'voter1@example.com', password: 'password123' },
     { email: 'voter2@example.com', password: 'password456' },
   ];
+
+  const adminCredentials = {
+    username: 'admin',
+    password: 'adminpass123',
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
@@ -160,12 +182,11 @@ const PollsPage = () => {
               )}
 
               {/* Admin Login Form */}
-              {activeTab === 'admin' && (
-                <div className="space-y-6">
+              {activeTab === 'admin' && !isAdminAuthenticated && (
+                <form className="space-y-6" onSubmit={handleAdminLogin}>
                   <div className="text-center">
                     <p className="text-gray-700 mb-4">Admin access for managing polls and results</p>
                   </div>
-                  
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -173,32 +194,43 @@ const PollsPage = () => {
                       </label>
                       <input
                         type="text"
+                        name="adminUsername"
                         placeholder="Enter admin username"
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 shadow-sm hover:shadow-md"
                       />
                     </div>
-                    
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Admin Password
                       </label>
                       <input
                         type="password"
+                        name="adminPassword"
                         placeholder="Enter admin password"
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 shadow-sm hover:shadow-md"
                       />
                     </div>
-                    
-                    <button className="group w-full bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-white py-3 px-6 rounded-xl font-medium hover:from-orange-600 hover:via-red-600 hover:to-pink-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                    <button
+                      type="submit"
+                      className="group w-full bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-white py-3 px-6 rounded-xl font-medium hover:from-orange-600 hover:via-red-600 hover:to-pink-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                    >
                       <span className="group-hover:scale-105 transition-transform duration-300">Access Admin Panel</span>
                     </button>
                   </div>
-                  
                   <div className="text-center">
                     <p className="text-sm text-gray-500">
                       Admin credentials required for access
                     </p>
                   </div>
+                </form>
+              )}
+
+              {/* Admin Authenticated View */}
+              {activeTab === 'admin' && isAdminAuthenticated && (
+                <div className="mt-8 text-center">
+                  <h2 className="text-2xl font-bold text-green-600 mb-4">Welcome, Admin!</h2>
+                  <p className="text-gray-700">You now have access to manage polls and view results.</p>
+                  {/* Add admin features here */}
                 </div>
               )}
             </div>
