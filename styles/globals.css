@@ -6,3 +6,18 @@
 body {
   font-family: 'Poppins', sans-serif;
 }
+
+/* Ensure navbar displays correctly */
+nav {
+  display: block !important;
+}
+
+/* Fix any potential layout issues */
+.fixed {
+  position: fixed !important;
+}
+
+/* Ensure proper z-index */
+.z-50 {
+  z-index: 50 !important;
+}
