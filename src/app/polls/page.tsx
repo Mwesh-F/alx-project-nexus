@@ -7,6 +7,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
 import { voteForContestant } from '../../store/contestantsSlice';
 import { addVote } from '../../store/votesSlice';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 const PollsPage = () => {
   const [activeTab, setActiveTab] = useState<'voter' | 'admin'>('voter');
@@ -16,6 +19,26 @@ const PollsPage = () => {
   const handleVote = (id: string) => {
     dispatch(voteForContestant(id));
     dispatch(addVote(id));
+  };
+
+  const voterSchema = z.object({
+    email: z.string().email({ message: "Invalid email address" }),
+    password: z.string().min(6, { message: "Password must be at least 6 characters" }),
+  });
+
+  type VoterFormData = z.infer<typeof voterSchema>;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<VoterFormData>({
+    resolver: zodResolver(voterSchema),
+  });
+
+  const onVoterLogin = (data: VoterFormData) => {
+    // TODO: Authenticate voter here
+    alert(`Logged in as: ${data.email}`);
   };
 
   return (
@@ -75,11 +98,10 @@ const PollsPage = () => {
 
               {/* Voter Login Form */}
               {activeTab === 'voter' && (
-                <div className="space-y-6">
+                <form className="space-y-6" onSubmit={handleSubmit(onVoterLogin)}>
                   <div className="text-center">
                     <p className="text-gray-700 mb-4">To vote, please submit your Email Address and Password</p>
                   </div>
-                  
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -89,9 +111,12 @@ const PollsPage = () => {
                         type="email"
                         placeholder="Enter your email address"
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 shadow-sm hover:shadow-md"
+                        {...register('email')}
                       />
+                      {errors.email && (
+                        <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+                      )}
                     </div>
-                    
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Password
@@ -100,20 +125,25 @@ const PollsPage = () => {
                         type="password"
                         placeholder="Enter your password"
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 shadow-sm hover:shadow-md"
+                        {...register('password')}
                       />
+                      {errors.password && (
+                        <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
+                      )}
                     </div>
-                    
-                    <button className="group w-full bg-gradient-to-r from-purple-600 via-pink-500 to-blue-600 text-white py-3 px-6 rounded-xl font-medium hover:from-purple-700 hover:via-pink-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                    <button
+                      type="submit"
+                      className="group w-full bg-gradient-to-r from-purple-600 via-pink-500 to-blue-600 text-white py-3 px-6 rounded-xl font-medium hover:from-purple-700 hover:via-pink-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                    >
                       <span className="group-hover:scale-105 transition-transform duration-300">Access Voting Booth</span>
                     </button>
                   </div>
-                  
                   <div className="text-center">
                     <p className="text-sm text-gray-500">
                       Don't have credentials? Contact your administrator
                     </p>
                   </div>
-                </div>
+                </form>
               )}
 
               {/* Admin Login Form */}
