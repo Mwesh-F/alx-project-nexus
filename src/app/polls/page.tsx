@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,14 +10,86 @@ import { addVote } from '../../store/votesSlice';
 import { useForm as useContestantForm } from 'react-hook-form';
 import { z as zContestant } from 'zod';
 import { zodResolver as zodContestantResolver } from '@hookform/resolvers/zod';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, CartesianGrid, Legend } from 'recharts';
+
+const CATEGORY_TABS = [
+  { label: "All Categories", value: "all" },
+  { label: "Miss Kenya", value: "miss-kenya" },
+  { label: "Miss Popularity", value: "miss-popularity" },
+  { label: "Miss Talent", value: "miss-talent" },
+  { label: "Miss Photogenic", value: "miss-photogenic" },
+  { label: "Miss Congeniality", value: "miss-congeniality" },
+];
+
+function getCurrentLeader(contestants: Array<{ id: string; name: string; bio: string; photoUrl: string; votes: number }>) {
+  if (contestants.length === 0) return null;
+  return contestants.reduce((max, c) => (c.votes > max.votes ? c : max));
+}
+
+interface Contestant {
+  id: string;
+  name: string;
+  bio: string;
+  photoUrl: string;
+  votes: number;
+}
+
+function getTopContenders(contestants: Contestant[], count: number = 4): Contestant[] {
+  return [...contestants].sort((a, b) => b.votes - a.votes).slice(0, count);
+}
+
+interface VotingTrendPoint {
+  time: string;
+  votes: number;
+}
+
+interface VotingTrendContestant {
+  votes: number;
+}
+
+function getVotingTrendData(contestants: VotingTrendContestant[]): VotingTrendPoint[] {
+  // Mock trend: random walk for demo; replace with real data if available
+  const trend: VotingTrendPoint[] = [];
+  for (let i = 0; i < 20; i++) {
+    trend.push({
+      time: `T${i + 1}`,
+      votes: contestants.reduce((sum, c) => sum + Math.max(0, c.votes - Math.floor(Math.random() * 10)), 0),
+    });
+  }
+  return trend;
+}
 
 const PollsPage = () => {
   const [activeTab, setActiveTab] = useState<'voter' | 'admin'>('voter');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
   const [newContestant, setNewContestant] = useState({ name: '', bio: '', photoUrl: '' });
+  const [selectedCategory, setSelectedCategory] = useState('miss-kenya');
+  const [lastUpdated, setLastUpdated] = useState(new Date());
+  const [finale, setFinale] = useState({
+    title: "Miss Kenya 2023 Grand Finale",
+    date: "",
+    time: "",
+    location: "",
+    broadcast: "",
+    voteCloses: "",
+    imageUrl: "/stage-event.jpg",
+  });
   const contestants = useSelector((state: RootState) => state.contestants.contestants);
   const dispatch = useDispatch();
+
+  // Auto-update last updated timestamp every 10 seconds
+  useEffect(() => {
+    const interval = setInterval(() => setLastUpdated(new Date()), 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Only show Miss Kenya contestants for now
+  const filteredContestants = contestants; // Update filter logic when adding more categories
+
+  const currentLeader = getCurrentLeader(filteredContestants);
+  const topContenders = getTopContenders(filteredContestants);
+  const votingTrendData = getVotingTrendData(filteredContestants);
 
   const handleVote = (id: string) => {
     dispatch(voteForContestant(id));
@@ -434,6 +506,169 @@ const PollsPage = () => {
           </div>
         )}
       </div>
+
+      {/* Voting Results Section - Authenticated Users */}
+      {isAuthenticated && (
+        <div className="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left/Main: Voting Results */}
+          <div className="lg:col-span-2 space-y-8">
+            {/* Category Tabs */}
+            <div className="flex flex-wrap gap-2 mb-4">
+              {CATEGORY_TABS.map(tab => (
+                <button
+                  key={tab.value}
+                  className={`px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-200 ${
+                    tab.value === selectedCategory
+                      ? "bg-[#FF5A5F] text-white border-[#FF5A5F]"
+                      : "bg-white text-gray-700 border-gray-200 hover:bg-[#FFE5E5]"
+                  }`}
+                  onClick={() => setSelectedCategory(tab.value)}
+                  disabled={tab.value !== "miss-kenya"}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+            {/* Live Update Bar */}
+            <div className="flex items-center gap-3 mb-2">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+              <span className="text-sm font-medium text-gray-700">Live Updates</span>
+              <span className="text-xs text-gray-400 ml-2">
+                Last updated: {lastUpdated.toLocaleString('en-KE', { dateStyle: 'medium', timeStyle: 'short' })} EAT
+              </span>
+            </div>
+            {/* Overall Voting Results */}
+            <div className="bg-[#FCFCFC] rounded-2xl shadow p-6 mb-6">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-lg font-bold text-gray-900">Overall Voting Results</h2>
+                <span className="text-xs text-gray-500">
+                  Total Votes: {filteredContestants.reduce((sum, c) => sum + c.votes, 0)}
+                </span>
+              </div>
+              <ResponsiveContainer width="100%" height={180}>
+                <BarChart
+                  data={filteredContestants}
+                  layout="vertical"
+                  margin={{ left: 20, right: 20, top: 10, bottom: 10 }}
+                >
+                  <XAxis type="number" allowDecimals={false} />
+                  <YAxis type="category" dataKey="name" width={120} />
+                  <Tooltip />
+                  <Bar dataKey="votes" fill="#FF5A5F" radius={[0, 10, 10, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            {/* Voting Trend */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-[#FCFCFC] rounded-2xl shadow p-6">
+                <h3 className="text-md font-bold text-gray-900 mb-2">Voting Trend</h3>
+                <ResponsiveContainer width="100%" height={180}>
+                  <LineChart data={votingTrendData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="time" hide />
+                    <YAxis hide />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="votes" stroke="#FF5A5F" strokeWidth={2} dot={false} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
+          {/* Right: Leader & Top Contenders */}
+          <div className="space-y-8">
+            {/* Current Leader */}
+            {currentLeader && (
+              <div className="bg-[#FCFCFC] rounded-2xl shadow p-6 mb-6">
+                <h3 className="font-bold text-gray-900 mb-2">Current Leader</h3>
+                <div className="flex flex-col items-center">
+                  <div className="relative">
+                    <img
+                      src={currentLeader.photoUrl}
+                      alt={currentLeader.name}
+                      className="w-32 h-32 object-cover rounded-xl mb-2 border-4 border-[#FF5A5F]"
+                    />
+                    <span className="absolute top-2 right-2 bg-[#FF5A5F] text-white text-xs font-bold px-2 py-1 rounded-full shadow">
+                      {Math.round((currentLeader.votes / filteredContestants.reduce((sum, c) => sum + c.votes, 0)) * 100) || 0}% Votes
+                    </span>
+                  </div>
+                  <div className="text-lg font-bold text-gray-900">{currentLeader.name}</div>
+                  <div className="text-sm text-gray-500 mb-2">
+                    Contestant #{currentLeader.id} • Nairobi County
+                  </div>
+                  <div className="text-xs text-gray-600 mb-3">
+                    Leading with strong support from youth voters aged 18-25.
+                  </div>
+                  <button className="bg-[#FF5A5F] hover:bg-[#E31C5F] text-white px-6 py-2 rounded-lg font-semibold transition-all duration-200">
+                    Vote for {currentLeader.name}
+                  </button>
+                </div>
+              </div>
+            )}
+            {/* Top Contenders */}
+            <div className="bg-[#FCFCFC] rounded-2xl shadow p-6">
+              <h3 className="font-bold text-gray-900 mb-4">Top Contenders</h3>
+              <ul>
+                {topContenders.map((c, idx) => (
+                  <li key={c.id} className="flex items-center mb-4">
+                    <img
+                      src={c.photoUrl}
+                      alt={c.name}
+                      className="w-10 h-10 rounded-full object-cover mr-3 border-2 border-[#FF5A5F]"
+                    />
+                    <div className="flex-1">
+                      <div className="font-semibold text-gray-900">{c.name}</div>
+                      <div className="text-xs text-gray-500">Contestant #{c.id} • {c.bio}</div>
+                    </div>
+                    <span className="text-[#FF5A5F] font-bold text-lg">{c.votes}</span>
+                    <span className="ml-1 text-xs text-gray-500">votes</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Finale Settings Section - Admin Only */}
+      {isAdminAuthenticated && (
+        <div className="bg-[#FFE5E5] rounded-2xl shadow p-6 mb-10">
+          <div className="flex flex-col md:flex-row gap-6 items-center">
+            <img
+              src={finale.imageUrl}
+              alt={finale.title}
+              className="rounded-xl w-full md:w-72 h-44 object-cover"
+            />
+            <div className="flex-1">
+              <div className="flex justify-between items-center mb-2">
+                <h2 className="text-xl font-bold text-gray-900">{finale.title}</h2>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm mb-2">
+                <div>
+                  <span className="font-semibold text-gray-900">Date</span>
+                  <div>{finale.date}</div>
+                </div>
+                <div>
+                  <span className="font-semibold text-gray-900">Time</span>
+                  <div>{finale.time}</div>
+                </div>
+                <div>
+                  <span className="font-semibold text-gray-900">Location</span>
+                  <div>{finale.location}</div>
+                </div>
+                <div>
+                  <span className="font-semibold text-gray-900">Broadcast</span>
+                  <div>{finale.broadcast}</div>
+                </div>
+                <div>
+                  <span className="font-semibold text-gray-900">Voting Closes</span>
+                  <div>{finale.voteCloses}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
