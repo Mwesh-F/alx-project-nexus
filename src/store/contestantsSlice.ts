@@ -1,19 +1,34 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export interface Contestant {
-  id: string;
-  name: string;
-  bio: string;
-  photoUrl: string;
-  votes: number;
-}
+import { Contestant } from '../types/contestant'; // <-- use shared type
 
 interface ContestantsState {
   contestants: Contestant[];
 }
 
 const initialState: ContestantsState = {
-  contestants: [],
+  contestants: [
+    {
+      id: '1',
+      name: 'Aisha Mwangi',
+      bio: 'Miss Nairobi County 2023',
+      photoUrl: '/contestants/aisha.jpg',
+      votes: 0,
+    },
+    {
+      id: '2',
+      name: 'Faith Otieno',
+      bio: 'Miss Kisumu County 2023',
+      photoUrl: '/contestants/faith.jpg',
+      votes: 0,
+    },
+    {
+      id: '3',
+      name: 'Zainab Hassan',
+      bio: 'Miss Mombasa County 2023',
+      photoUrl: '/contestants/zainab.jpg',
+      votes: 0,
+    },
+  ],
 };
 
 const contestantsSlice = createSlice({

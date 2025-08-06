@@ -6,6 +6,7 @@ export const store = configureStore({
   reducer: {
     contestants: contestantsReducer,
     votes: votesReducer, 
+  }
 });
 
 export type RootState = ReturnType<typeof store.getState>;

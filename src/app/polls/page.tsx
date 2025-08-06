@@ -3,9 +3,20 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../store/store';
+import { voteForContestant } from '../../store/contestantsSlice';
+import { addVote } from '../../store/votesSlice';
 
 const PollsPage = () => {
   const [activeTab, setActiveTab] = useState<'voter' | 'admin'>('voter');
+  const contestants = useSelector((state: RootState) => state.contestants.contestants);
+  const dispatch = useDispatch();
+
+  const handleVote = (id: string) => {
+    dispatch(voteForContestant(id));
+    dispatch(addVote(id));
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
@@ -66,17 +77,17 @@ const PollsPage = () => {
               {activeTab === 'voter' && (
                 <div className="space-y-6">
                   <div className="text-center">
-                    <p className="text-gray-700 mb-4">To vote, please submit your Elector ID and Password</p>
+                    <p className="text-gray-700 mb-4">To vote, please submit your Email Address and Password</p>
                   </div>
                   
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Elector ID
+                        Email Address
                       </label>
                       <input
-                        type="text"
-                        placeholder="Enter your Elector ID"
+                        type="email"
+                        placeholder="Enter your email address"
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 shadow-sm hover:shadow-md"
                       />
                     </div>
@@ -217,6 +228,31 @@ const PollsPage = () => {
                 <span className="ml-2 group-hover:translate-x-1 transition-transform duration-300">→</span>
               </Link>
             </div>
+          </div>
+        </div>
+
+        {/* Voting Section - Display Contestants and Voting Buttons */}
+        <div className="mt-12">
+          <h1 className="text-3xl font-bold mb-8 text-center">Vote for Your Favorite Contestant</h1>
+          <div className="grid md:grid-cols-3 gap-8">
+            {contestants.map(contestant => (
+              <div key={contestant.id} className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center">
+                <img
+                  src={contestant.photoUrl}
+                  alt={contestant.name}
+                  className="w-32 h-32 object-cover rounded-full mb-4"
+                />
+                <h2 className="text-xl font-semibold">{contestant.name}</h2>
+                <p className="text-gray-600 mb-4">{contestant.bio}</p>
+                <button
+                  className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-200"
+                  onClick={() => handleVote(contestant.id)}
+                >
+                  Vote
+                </button>
+                <span className="mt-2 text-gray-700">Votes: {contestant.votes}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
