@@ -7,9 +7,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
 import { voteForContestant, resetVotes, addContestant } from '../../store/contestantsSlice';
 import { addVote } from '../../store/votesSlice';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm as useContestantForm } from 'react-hook-form';
+import { z as zContestant } from 'zod';
+import { zodResolver as zodContestantResolver } from '@hookform/resolvers/zod';
 
 const PollsPage = () => {
   const [activeTab, setActiveTab] = useState<'voter' | 'admin'>('voter');
@@ -24,19 +24,19 @@ const PollsPage = () => {
     dispatch(addVote(id));
   };
 
-  const voterSchema = z.object({
-    email: z.string().email({ message: "Invalid email address" }),
-    password: z.string().min(6, { message: "Password must be at least 6 characters" }),
+  const voterSchema = zContestant.object({
+    email: zContestant.string().email({ message: "Invalid email address" }),
+    password: zContestant.string().min(6, { message: "Password must be at least 6 characters" }),
   });
 
-  type VoterFormData = z.infer<typeof voterSchema>;
+  type VoterFormData = zContestant.infer<typeof voterSchema>;
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<VoterFormData>({
-    resolver: zodResolver(voterSchema),
+  } = useContestantForm<VoterFormData>({
+    resolver: zodContestantResolver(voterSchema),
   });
 
   const onVoterLogin = (data: VoterFormData) => {
@@ -82,6 +82,23 @@ const PollsPage = () => {
     username: 'admin',
     password: 'adminpass123',
   };
+
+  const contestantSchema = zContestant.object({
+    name: zContestant.string().min(2, { message: "Name is required" }),
+    bio: zContestant.string().min(5, { message: "Bio is required" }),
+    photoUrl: zContestant.string().url({ message: "Photo URL must be valid" }),
+  });
+
+  type ContestantFormData = zContestant.infer<typeof contestantSchema>;
+
+  const {
+    register: registerContestant,
+    handleSubmit: handleSubmitContestant,
+    formState: { errors: contestantErrors },
+    reset: resetContestantForm,
+  } = useContestantForm<ContestantFormData>({
+    resolver: zodContestantResolver(contestantSchema),
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
@@ -369,37 +386,44 @@ const PollsPage = () => {
             <h2 className="text-3xl font-bold mb-6 text-center">Add New Contestant</h2>
             <form
               className="mb-8 flex flex-col md:flex-row items-center gap-4 justify-center"
-              onSubmit={e => {
-                e.preventDefault();
-                if (!newContestant.name || !newContestant.bio || !newContestant.photoUrl) {
-                  alert('Please fill in all fields.');
-                  return;
-                }
-                dispatch(addContestant(newContestant));
-                setNewContestant({ name: '', bio: '', photoUrl: '' });
-              }}
+              onSubmit={handleSubmitContestant(data => {
+                dispatch(addContestant(data));
+                resetContestantForm();
+              })}
             >
-              <input
-                type="text"
-                placeholder="Name"
-                className="px-3 py-2 border rounded"
-                value={newContestant.name}
-                onChange={e => setNewContestant({ ...newContestant, name: e.target.value })}
-              />
-              <input
-                type="text"
-                placeholder="Bio"
-                className="px-3 py-2 border rounded"
-                value={newContestant.bio}
-                onChange={e => setNewContestant({ ...newContestant, bio: e.target.value })}
-              />
-              <input
-                type="text"
-                placeholder="Photo URL"
-                className="px-3 py-2 border rounded"
-                value={newContestant.photoUrl}
-                onChange={e => setNewContestant({ ...newContestant, photoUrl: e.target.value })}
-              />
+              <div>
+                <input
+                  type="text"
+                  placeholder="Name"
+                  className="px-3 py-2 border rounded"
+                  {...registerContestant('name')}
+                />
+                {contestantErrors.name && (
+                  <p className="text-red-500 text-xs mt-1">{contestantErrors.name.message}</p>
+                )}
+              </div>
+              <div>
+                <input
+                  type="text"
+                  placeholder="Bio"
+                  className="px-3 py-2 border rounded"
+                  {...registerContestant('bio')}
+                />
+                {contestantErrors.bio && (
+                  <p className="text-red-500 text-xs mt-1">{contestantErrors.bio.message}</p>
+                )}
+              </div>
+              <div>
+                <input
+                  type="text"
+                  placeholder="Photo URL"
+                  className="px-3 py-2 border rounded"
+                  {...registerContestant('photoUrl')}
+                />
+                {contestantErrors.photoUrl && (
+                  <p className="text-red-500 text-xs mt-1">{contestantErrors.photoUrl.message}</p>
+                )}
+              </div>
               <button
                 type="submit"
                 className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded font-semibold"
