@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Contestant } from '../types/contestant'; // <-- use shared type
+import { Contestant } from '../types/contestant';
 
 interface ContestantsState {
   contestants: Contestant[];
@@ -44,8 +44,11 @@ const contestantsSlice = createSlice({
         contestant.votes += 1;
       }
     },
+    resetVotes(state) {
+      state.contestants.forEach(c => { c.votes = 0; });
+    },
   },
 });
 
-export const { setContestants, voteForContestant } = contestantsSlice.actions;
+export const { setContestants, voteForContestant, resetVotes } = contestantsSlice.actions;
 export default contestantsSlice.reducer;

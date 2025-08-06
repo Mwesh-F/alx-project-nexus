@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
-import { voteForContestant } from '../../store/contestantsSlice';
+import { voteForContestant, resetVotes } from '../../store/contestantsSlice';
 import { addVote } from '../../store/votesSlice';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -229,8 +229,31 @@ const PollsPage = () => {
               {activeTab === 'admin' && isAdminAuthenticated && (
                 <div className="mt-8 text-center">
                   <h2 className="text-2xl font-bold text-green-600 mb-4">Welcome, Admin!</h2>
-                  <p className="text-gray-700">You now have access to manage polls and view results.</p>
-                  {/* Add admin features here */}
+                  <p className="text-gray-700 mb-6">You now have access to manage polls and view results.</p>
+                  <div className="overflow-x-auto mb-6">
+                    <table className="min-w-full bg-white rounded-xl shadow">
+                      <thead>
+                        <tr>
+                          <th className="py-2 px-4 border-b">Contestant</th>
+                          <th className="py-2 px-4 border-b">Votes</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {contestants.map(c => (
+                          <tr key={c.id}>
+                            <td className="py-2 px-4 border-b">{c.name}</td>
+                            <td className="py-2 px-4 border-b">{c.votes}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <button
+                    onClick={() => dispatch(resetVotes())}
+                    className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-200"
+                  >
+                    Reset All Votes
+                  </button>
                 </div>
               )}
             </div>
