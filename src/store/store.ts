@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
+import contestantsReducer from './contestantsSlice';
 
 export const store = configureStore({
   reducer: {
-    // Add reducers here
+    contestants: contestantsReducer,
   },
 });
 
-// Infer the `RootState` and `AppDispatch` types
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
