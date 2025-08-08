@@ -1,7 +1,13 @@
+import dynamic from 'next/dynamic';
+
+const VotesBarChart = dynamic(() => import('../../components/VotesBarChart'), { ssr: false });
 'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../store';
+import { voteForContestant } from '../../store/contestantsSlice';
 
 const CATEGORIES = [
   { label: "Miss Kenya National", value: "miss-kenya", active: true },
@@ -11,49 +17,20 @@ const CATEGORIES = [
   { label: "Miss Congeniality", value: "miss-congeniality", active: false },
 ];
 
-const CONTESTANTS = [
-  {
-    id: 1,
-    name: "Amara Kenyatta",
-    county: "Nairobi County",
-    age: 24,
-  photoUrl: "/miss2.jpg",
-    votes: 1245,
-    rating: 4.5,
-    profileUrl: "/contestants/1",
-  },
-  {
-    id: 2,
-    name: "Zuri Ochieng",
-    county: "Mombasa County",
-    age: 23,
-  photoUrl: "/miss4.jpg",
-    votes: 982,
-    rating: 4.0,
-    profileUrl: "/contestants/2",
-  },
-  {
-    id: 3,
-    name: "Nia Kimani",
-    county: "Kisumu County",
-    age: 25,
-  photoUrl: "/miss5.jpg",
-    votes: 876,
-    rating: 4.0,
-    profileUrl: "/contestants/3",
-  },
-];
+
+
 
 export default function PollsPage() {
   const [selectedCategory, setSelectedCategory] = useState("miss-kenya");
   const [page, setPage] = useState(1);
+  const dispatch = useDispatch();
 
+  // Get contestants from Redux
+  const contestants = useSelector((state: RootState) => state.contestants.contestants);
   const PAGE_SIZE = 6;
-  const paginatedContestants = CONTESTANTS.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-  const totalPages = Math.ceil(CONTESTANTS.length / PAGE_SIZE);
-
-  // Voting stats (replace with real data as needed)
-  const totalVotes = CONTESTANTS.reduce((sum, c) => sum + c.votes, 0);
+  const paginatedContestants = contestants.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const totalPages = Math.ceil(contestants.length / PAGE_SIZE);
+  const totalVotes = contestants.reduce((sum, c) => sum + c.votes, 0);
   const timeRemaining = "3 days";
 
   return (
@@ -63,7 +40,7 @@ export default function PollsPage() {
           Miss Kenya 2023 - Vote for Your Favorite
         </h1>
         <p className="text-gray-700 mb-8">
-          Cast your vote to help crown the next Miss Kenya. Voting closes on June 30th, 2023.
+          Cast your vote to help crown the next Miss Kenya. Voting closes on September 30th, 2025.
         </p>
         <div className="grid md:grid-cols-4 gap-8">
           {/* Sidebar */}
@@ -124,6 +101,14 @@ export default function PollsPage() {
                 </button>
               </Link>
             </div>
+            {/* Votes Chart Visualization */}
+            <div className="bg-white rounded-2xl shadow p-6 mb-6">
+              <h3 className="text-lg font-bold text-gray-900 mb-4">Live Vote Results</h3>
+              <VotesBarChart
+                labels={contestants.map(c => c.name)}
+                votes={contestants.map(c => c.votes)}
+              />
+            </div>
             {/* Contestant Cards */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {paginatedContestants.map((c, idx) => (
@@ -137,17 +122,18 @@ export default function PollsPage() {
                     {String((page - 1) * PAGE_SIZE + idx + 1).padStart(2, "0")}
                   </span>
                   <h3 className="text-lg font-bold text-gray-900">{c.name}</h3>
-                  <div className="text-gray-600 text-sm mb-1">{c.county} • {c.age} years</div>
+                  <div className="text-gray-600 text-sm mb-1">{c.bio}</div>
                   <div className="flex items-center mb-2">
                     <span className="text-yellow-400 mr-1">★</span>
-                    <span className="font-semibold text-gray-800">{c.rating}</span>
+                    <span className="font-semibold text-gray-800">{c.votes}</span>
                     <span className="text-gray-500 text-xs ml-2">({c.votes.toLocaleString()} votes)</span>
                   </div>
                   <div className="flex gap-3 mt-2">
-                    <Link href={c.profileUrl} className="text-[#FF5A5F] font-semibold text-sm hover:underline">
-                      View Profile
-                    </Link>
-                    <button className="bg-[#FF5A5F] hover:bg-[#E31C5F] text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200">
+                    {/* No profileUrl in Contestant type, so remove View Profile link */}
+                    <button
+                      className="bg-[#FF5A5F] hover:bg-[#E31C5F] text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200"
+                      onClick={() => dispatch(voteForContestant(c.id))}
+                    >
                       Vote Now
                     </button>
                   </div>
@@ -155,7 +141,7 @@ export default function PollsPage() {
               ))}
             </div>
             <div className="text-center text-gray-600 mt-6 mb-4">
-              Showing {(page - 1) * PAGE_SIZE + 1} - {Math.min(page * PAGE_SIZE, CONTESTANTS.length)} of {CONTESTANTS.length} contestants
+              Showing {(page - 1) * PAGE_SIZE + 1} - {Math.min(page * PAGE_SIZE, contestants.length)} of {contestants.length} contestants
             </div>
             {/* Pagination */}
             <div className="flex justify-center gap-2 mb-10">
