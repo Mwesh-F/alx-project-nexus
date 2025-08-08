@@ -242,8 +242,8 @@ export default function HomePage() {
 							<Image src="/miss10.jpg" alt="Miss Kenya 2023 Talent Showcase Highlights" width={400} height={192} className="object-cover w-full h-full" />
 						</div>
 						<div className="p-6 flex-1 flex flex-col">
-							<div className="text-[#FF5A5F] font-semibold text-sm mb-1">June 15, 2023</div>
-							<div className="font-bold text-lg mb-2">Miss Kenya 2023 Talent Showcase Highlights</div>
+							<div className="text-[#FF5A5F] font-semibold text-sm mb-1">June 15, 2025</div>
+							<div className="font-bold text-lg mb-2">Miss Kenya 2025 Talent Showcase Highlights</div>
 							<div className="text-gray-600 text-sm mb-4 flex-1">The contestants amazed the audience with their diverse talents, from traditional dance to contemporary performances.</div>
 							<a href="#" className="text-[#FF5A5F] font-bold text-sm flex items-center gap-1 hover:underline">Read More <span className="text-lg">→</span></a>
 						</div>
@@ -254,7 +254,7 @@ export default function HomePage() {
 							<Image src="/miss11.jpg" alt="Behind the Scenes: Preparing for the Crown" width={400} height={192} className="object-cover w-full h-full" />
 						</div>
 						<div className="p-6 flex-1 flex flex-col">
-							<div className="text-[#FF5A5F] font-semibold text-sm mb-1">June 10, 2023</div>
+							<div className="text-[#FF5A5F] font-semibold text-sm mb-1">June 10, 2025</div>
 							<div className="font-bold text-lg mb-2">Behind the Scenes: Preparing for the Crown</div>
 							<div className="text-gray-600 text-sm mb-4 flex-1">Get an exclusive look at how contestants prepare for the biggest night of the pageant season.</div>
 							<a href="#" className="text-[#FF5A5F] font-bold text-sm flex items-center gap-1 hover:underline">Read More <span className="text-lg">→</span></a>
@@ -266,7 +266,7 @@ export default function HomePage() {
 							<Image src="/miss13.jpg" alt="CrownVote Launches Community Outreach Program" width={400} height={192} className="object-cover w-full h-full" />
 						</div>
 						<div className="p-6 flex-1 flex flex-col">
-							<div className="text-[#FF5A5F] font-semibold text-sm mb-1">June 5, 2023</div>
+							<div className="text-[#FF5A5F] font-semibold text-sm mb-1">June 5, 2025</div>
 							<div className="font-bold text-lg mb-2">CrownVote Launches Community Outreach Program</div>
 							<div className="text-gray-600 text-sm mb-4 flex-1">Our team is visiting communities across Kenya to ensure everyone can participate in the voting process.</div>
 							<a href="#" className="text-[#FF5A5F] font-bold text-sm flex items-center gap-1 hover:underline">Read More <span className="text-lg">→</span></a>

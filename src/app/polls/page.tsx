@@ -27,32 +27,31 @@ const CATEGORIES = [
 
 
 export default function PollsPage() {
-  const isSignedIn = useAuth();
+  // Remove sign-in requirement
+  // const isSignedIn = useAuth();
   const [selectedCategory, setSelectedCategory] = useState("miss-kenya");
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
 
-  // Track voted contestant in localStorage
+  // Track voted contestant per day in localStorage
   const [votedId, setVotedId] = useState<string | null>(null);
+  const todayKey = `votedContestantId_${new Date().toISOString().slice(0, 10)}`;
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('votedContestantId');
+      const stored = localStorage.getItem(todayKey);
       if (stored) setVotedId(stored);
     }
-  }, []);
+  }, [todayKey]);
 
-  // Voting handler using JWT token (ready for backend integration)
+  // Voting handler: no login required, once per day per device
   const handleVote = async (id: string) => {
-    if (!isSignedIn) return;
     if (!votedId) {
-      const token = typeof window !== 'undefined' ? localStorage.getItem('access') : null;
       try {
         const res = await fetch('http://127.0.0.1:8000/api/users/vote/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
           },
           body: JSON.stringify({ contestantId: id }),
         });
@@ -60,7 +59,7 @@ export default function PollsPage() {
           dispatch(voteForContestant(id));
           setVotedId(id);
           if (typeof window !== 'undefined') {
-            localStorage.setItem('votedContestantId', id);
+            localStorage.setItem(todayKey, id);
           }
         } else {
           const data = await res.json();
@@ -169,15 +168,7 @@ export default function PollsPage() {
                 votes={contestants.map(c => c.votes)}
               />
             </div>
-            {/* Sign-in Prompt */}
-            {!isSignedIn && (
-              <div className="bg-yellow-100 border border-yellow-300 text-yellow-800 rounded-lg p-4 mb-6 text-center">
-                <span className="font-semibold">Please sign in or sign up to vote.</span>
-                <Link href="/signin" className="ml-2 text-[#FF5A5F] font-bold underline">Sign In</Link>
-                <span className="mx-1">or</span>
-                <Link href="/signup" className="text-[#FF5A5F] font-bold underline">Sign Up</Link>
-              </div>
-            )}
+            {/* No sign-in prompt needed */}
             {/* Contestant Cards */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {paginatedContestants.map((c, idx) => (
@@ -200,11 +191,11 @@ export default function PollsPage() {
                   <div className="flex gap-3 mt-2">
                     {/* No profileUrl in Contestant type, so remove View Profile link */}
                     <button
-                      className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 ${!isSignedIn || votedId ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-[#FF5A5F] hover:bg-[#E31C5F] text-white'}`}
+                      className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 ${votedId ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-[#FF5A5F] hover:bg-[#E31C5F] text-white'}`}
                       onClick={() => handleVote(c.id)}
-                      disabled={!isSignedIn || !!votedId}
+                      disabled={!!votedId}
                     >
-                      {!isSignedIn ? 'Sign in to Vote' : votedId ? 'Vote Cast' : 'Vote Now'}
+                      {votedId ? 'Vote Cast' : 'Vote Now'}
                     </button>
                   </div>
                 </div>

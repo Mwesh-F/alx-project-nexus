@@ -35,18 +35,13 @@ export default function Navbar() {
 					))}
 				</ul>
 				{/* Auth Buttons */}
-				<div className="flex gap-3 ml-auto">
-					<Link href="/login">
-						<button className="bg-white text-[#FF5A5F] px-5 py-1.5 rounded font-semibold hover:bg-gray-100 text-base shadow-sm">
-							Sign In
-						</button>
-					</Link>
-					<Link href="/polls">
-						<button className="bg-[#FF5A5F] text-white px-5 py-1.5 rounded font-semibold hover:bg-[#E31C5F] text-base shadow-sm">
-							Vote Now
-						</button>
-					</Link>
-				</div>
+				   <div className="flex gap-3 ml-auto">
+					   <Link href="/polls">
+						   <button className="bg-[#FF5A5F] text-white px-5 py-1.5 rounded font-semibold hover:bg-[#E31C5F] text-base shadow-sm">
+							   Vote Now
+						   </button>
+					   </Link>
+				   </div>
 			</div>
 		</nav>
 	);
