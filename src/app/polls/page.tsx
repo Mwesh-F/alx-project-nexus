@@ -1,10 +1,17 @@
-
 'use client';
 import dynamic from 'next/dynamic';
 const VotesBarChart = dynamic(() => import('../../components/VotesBarChart'), { ssr: false });
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
+
+// JWT-based authentication state
+const useAuth = () => {
+  if (typeof window !== 'undefined') {
+    return Boolean(localStorage.getItem('access'));
+  }
+  return false;
+};
 import { RootState } from '../../store';
 import { voteForContestant } from '../../store/contestantsSlice';
 
@@ -20,6 +27,7 @@ const CATEGORIES = [
 
 
 export default function PollsPage() {
+  const isSignedIn = useAuth();
   const [selectedCategory, setSelectedCategory] = useState("miss-kenya");
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
@@ -34,12 +42,32 @@ export default function PollsPage() {
     }
   }, []);
 
-  const handleVote = (id: string) => {
+  // Voting handler using JWT token (ready for backend integration)
+  const handleVote = async (id: string) => {
+    if (!isSignedIn) return;
     if (!votedId) {
-      dispatch(voteForContestant(id));
-      setVotedId(id);
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('votedContestantId', id);
+      const token = typeof window !== 'undefined' ? localStorage.getItem('access') : null;
+      try {
+        const res = await fetch('http://127.0.0.1:8000/api/users/vote/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({ contestantId: id }),
+        });
+        if (res.ok) {
+          dispatch(voteForContestant(id));
+          setVotedId(id);
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('votedContestantId', id);
+          }
+        } else {
+          const data = await res.json();
+          alert(data.detail || 'Failed to vote. Please try again.');
+        }
+      } catch (err) {
+        alert('Failed to vote. Please try again.');
       }
     }
   };
@@ -55,6 +83,19 @@ export default function PollsPage() {
   return (
     <div className="min-h-screen bg-[#FCFCFC] py-10 px-2">
       <div className="max-w-7xl mx-auto">
+        {/* Logout Button */}
+        {typeof window !== 'undefined' && localStorage.getItem('access') && (
+          <button
+            onClick={() => {
+              localStorage.removeItem('access');
+              localStorage.removeItem('refresh');
+              window.location.reload();
+            }}
+            className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg font-semibold float-right mb-4"
+          >
+            Logout
+          </button>
+        )}
         <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">
           Miss Kenya 2023 - Vote for Your Favorite
         </h1>
@@ -128,6 +169,15 @@ export default function PollsPage() {
                 votes={contestants.map(c => c.votes)}
               />
             </div>
+            {/* Sign-in Prompt */}
+            {!isSignedIn && (
+              <div className="bg-yellow-100 border border-yellow-300 text-yellow-800 rounded-lg p-4 mb-6 text-center">
+                <span className="font-semibold">Please sign in or sign up to vote.</span>
+                <Link href="/signin" className="ml-2 text-[#FF5A5F] font-bold underline">Sign In</Link>
+                <span className="mx-1">or</span>
+                <Link href="/signup" className="text-[#FF5A5F] font-bold underline">Sign Up</Link>
+              </div>
+            )}
             {/* Contestant Cards */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {paginatedContestants.map((c, idx) => (
@@ -150,11 +200,11 @@ export default function PollsPage() {
                   <div className="flex gap-3 mt-2">
                     {/* No profileUrl in Contestant type, so remove View Profile link */}
                     <button
-                      className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 ${votedId ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-[#FF5A5F] hover:bg-[#E31C5F] text-white'}`}
+                      className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 ${!isSignedIn || votedId ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-[#FF5A5F] hover:bg-[#E31C5F] text-white'}`}
                       onClick={() => handleVote(c.id)}
-                      disabled={!!votedId}
+                      disabled={!isSignedIn || !!votedId}
                     >
-                      {votedId ? 'Vote Cast' : 'Vote Now'}
+                      {!isSignedIn ? 'Sign in to Vote' : votedId ? 'Vote Cast' : 'Vote Now'}
                     </button>
                   </div>
                 </div>
