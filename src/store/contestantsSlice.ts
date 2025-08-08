@@ -78,8 +78,11 @@ const contestantsSlice = createSlice({
       };
       state.contestants.push(newContestant);
     },
+    removeContestant(state, action: PayloadAction<string>) {
+      state.contestants = state.contestants.filter(c => c.id !== action.payload);
+    },
   },
 });
 
-export const { setContestants, voteForContestant, resetVotes, addContestant } = contestantsSlice.actions;
+export const { setContestants, voteForContestant, resetVotes, addContestant, removeContestant } = contestantsSlice.actions;
 export default contestantsSlice.reducer;

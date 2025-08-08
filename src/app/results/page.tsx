@@ -147,7 +147,7 @@ const PollsPage = () => {
       const res = await fetch('http://127.0.0.1:8000/api/users/login/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: username, password }),
+        body: JSON.stringify({ email: username, username, password }),
       });
       if (res.ok) {
         const result = await res.json();
@@ -211,6 +211,11 @@ const PollsPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
+      {/* Results Page Navigation */}
+      <div className="flex gap-4 justify-center py-4">
+        <Link href="/results/admin" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Admin Results</Link>
+        <Link href="/results/voter" className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">Voter Results</Link>
+      </div>
       {/* Header Section */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -366,30 +371,7 @@ const PollsPage = () => {
                 <div className="mt-8 text-center">
                   <h2 className="text-2xl font-bold text-green-600 mb-4">Welcome, Admin!</h2>
                   <p className="text-gray-700 mb-6">You now have access to manage polls and view results.</p>
-                  <div className="overflow-x-auto mb-6">
-                    <table className="min-w-full bg-white rounded-xl shadow">
-                      <thead>
-                        <tr>
-                          <th className="py-2 px-4 border-b">Contestant</th>
-                          <th className="py-2 px-4 border-b">Votes</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {contestants.map(c => (
-                          <tr key={c.id}>
-                            <td className="py-2 px-4 border-b">{c.name}</td>
-                            <td className="py-2 px-4 border-b">{c.votes}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                  <button
-                    onClick={() => dispatch(resetVotes())}
-                    className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-200"
-                  >
-                    Reset All Votes
-                  </button>
+                  {/* Admin-only table and reset votes button removed as requested */}
                 </div>
               )}
             </div>
