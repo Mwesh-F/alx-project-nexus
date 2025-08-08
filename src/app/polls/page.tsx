@@ -73,10 +73,11 @@ export default function PollsPage() {
 
   // Get contestants from Redux
   const contestants = useSelector((state: RootState) => state.contestants.contestants);
+  const safeContestants = Array.isArray(contestants) ? contestants : [];
   const PAGE_SIZE = 6;
-  const paginatedContestants = contestants.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-  const totalPages = Math.ceil(contestants.length / PAGE_SIZE);
-  const totalVotes = contestants.reduce((sum, c) => sum + c.votes, 0);
+  const paginatedContestants = safeContestants.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const totalPages = Math.ceil(safeContestants.length / PAGE_SIZE);
+  const totalVotes = safeContestants.reduce((sum, c) => sum + c.votes, 0);
   const timeRemaining = "3 days";
 
   return (
@@ -160,8 +161,6 @@ export default function PollsPage() {
                 </button>
               </Link>
             </div>
-            {/* Chart removed: now only on results page */}
-            {/* No sign-in prompt needed */}
             {/* Contestant Cards */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {paginatedContestants.map((c, idx) => (
@@ -177,12 +176,19 @@ export default function PollsPage() {
                   <h3 className="text-lg font-bold text-gray-900">{c.name}</h3>
                   <div className="text-gray-600 text-sm mb-1">{c.bio}</div>
                   <div className="flex items-center mb-2">
-                    <span className="text-yellow-400 mr-1">★</span>
-                    <span className="font-semibold text-gray-800">{c.votes}</span>
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <span key={i} className={i < (c.rating || 0) ? "text-yellow-400" : "text-gray-300"}>★</span>
+                    ))}
+                    <span className="ml-2 text-gray-800 font-semibold text-sm">{c.rating ? c.rating.toFixed(1) : '0.0'}</span>
                     <span className="text-gray-500 text-xs ml-2">({c.votes.toLocaleString()} votes)</span>
                   </div>
                   <div className="flex gap-3 mt-2">
-                    {/* No profileUrl in Contestant type, so remove View Profile link */}
+                    <button
+                      className="text-[#FF5A5F] font-semibold text-sm underline hover:text-[#E31C5F]"
+                      // onClick={() => ...} // Add profile modal or link if needed
+                    >
+                      View Profile
+                    </button>
                     <button
                       className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 ${votedId ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-[#FF5A5F] hover:bg-[#E31C5F] text-white'}`}
                       onClick={() => handleVote(c.id)}
@@ -195,7 +201,7 @@ export default function PollsPage() {
               ))}
             </div>
             <div className="text-center text-gray-600 mt-6 mb-4">
-              Showing {(page - 1) * PAGE_SIZE + 1} - {Math.min(page * PAGE_SIZE, contestants.length)} of {contestants.length} contestants
+              Showing {(page - 1) * PAGE_SIZE + 1} - {Math.min(page * PAGE_SIZE, Array.isArray(contestants) ? contestants.length : 0)} of {Array.isArray(contestants) ? contestants.length : 0} contestants
             </div>
             {/* Pagination */}
             <div className="flex justify-center gap-2 mb-10">

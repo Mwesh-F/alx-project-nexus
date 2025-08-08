@@ -79,7 +79,7 @@ export default function AboutPage() {
           {/* Right: Image */}
           <div className="flex-1 flex justify-center items-start">
             <img
-              src="/voting-kenya.jpg"
+              src="/kenya.jpg"
               alt="Voting Kenya"
               className="rounded-xl shadow-lg w-full max-w-md object-cover"
             />

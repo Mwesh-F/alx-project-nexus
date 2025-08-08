@@ -10,7 +10,7 @@ export default function HomePage() {
 
 			{/* Banner */}
 			<div className="bg-[#FF5A5F] text-white text-center py-2 text-xs font-medium">
-				Miss Kenya 2023 voting is now open! Cast your vote before June 30th
+				Miss Kenya 2025 voting is now open! Cast your vote before September 30th
 			</div>
 
 			{/* Hero Section */}

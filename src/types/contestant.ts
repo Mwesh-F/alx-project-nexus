@@ -4,4 +4,5 @@ export interface Contestant {
   bio: string;
   photoUrl: string;
   votes: number;
+  rating?: number;
 }
