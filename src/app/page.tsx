@@ -23,7 +23,7 @@ export default function HomePage() {
 						CrownVote brings integrity and excitement to pageant voting with our secure, real-time platform designed specifically for Kenya’s beauty pageants.
 					</p>
 					<div className="flex flex-col sm:flex-row gap-4 justify-center">
-						<Link href="/polls">
+						<Link href="/signin">
 							<button className="bg-[#FF5A5F] hover:bg-[#E31C5F] text-white px-6 py-3 rounded-lg font-bold text-base shadow">Vote Now</button>
 						</Link>
 						<Link href="/about">
@@ -107,7 +107,7 @@ export default function HomePage() {
 							</li>
 						</ol>
 						<div className="mt-10">
-							<Link href="/polls">
+							<Link href="/signin">
 								<button className="bg-[#FF5A5F] hover:bg-[#E31C5F] text-white px-8 py-3 rounded-lg font-bold text-base shadow">Start Voting Now</button>
 							</Link>
 						</div>
@@ -134,7 +134,7 @@ export default function HomePage() {
 						</div>
 						<div className="font-bold text-lg">Amara Ochieng</div>
 						<div className="text-gray-500 text-sm mb-3">Nairobi County</div>
-						<Link href="/polls">
+						<Link href="/signin">
 							<button className="bg-[#FF5A5F] hover:bg-[#E31C5F] text-white px-8 py-2 rounded-lg font-bold text-base shadow">Vote Now</button>
 						</Link>
 					</div>
@@ -145,7 +145,7 @@ export default function HomePage() {
 						</div>
 						<div className="font-bold text-lg">Zuri Wambui</div>
 						<div className="text-gray-500 text-sm mb-3">Mombasa County</div>
-						<Link href="/polls">
+						<Link href="/signin">
 							<button className="bg-[#FF5A5F] hover:bg-[#E31C5F] text-white px-8 py-2 rounded-lg font-bold text-base shadow">Vote Now</button>
 						</Link>
 					</div>
@@ -156,7 +156,7 @@ export default function HomePage() {
 						</div>
 						<div className="font-bold text-lg">Nia Kimani</div>
 						<div className="text-gray-500 text-sm mb-3">Kisumu County</div>
-						<Link href="/polls">
+						<Link href="/signin">
 							<button className="bg-[#FF5A5F] hover:bg-[#E31C5F] text-white px-8 py-2 rounded-lg font-bold text-base shadow">Vote Now</button>
 						</Link>
 					</div>
@@ -167,7 +167,7 @@ export default function HomePage() {
 						</div>
 						<div className="font-bold text-lg">Imani Njeri</div>
 						<div className="text-gray-500 text-sm mb-3">Nakuru County</div>
-						<Link href="/polls">
+						<Link href="/signin">
 							<button className="bg-[#FF5A5F] hover:bg-[#E31C5F] text-white px-8 py-2 rounded-lg font-bold text-base shadow">Vote Now</button>
 						</Link>
 					</div>

@@ -113,31 +113,56 @@ const PollsPage = () => {
     resolver: zodContestantResolver(voterSchema),
   });
 
-  const onVoterLogin = (data: VoterFormData) => {
-    const found = allowedVoters.find(
-      (v) => v.email === data.email && v.password === data.password
-    );
-    if (found) {
-      setIsAuthenticated(true);
-      alert('Login successful! You can now vote.');
-    } else {
-      alert('Invalid email or password. Please try again.');
+  const onVoterLogin = async (data: VoterFormData) => {
+    try {
+      const res = await fetch('http://127.0.0.1:8000/api/users/login/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: data.email, password: data.password }),
+      });
+      if (res.ok) {
+        const result = await res.json();
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('access', result.access);
+          localStorage.setItem('refresh', result.refresh);
+        }
+        setIsAuthenticated(true);
+        alert('Login successful! You can now view the results.');
+      } else {
+        const error = await res.json();
+        alert(error.detail || 'Invalid email or password. Please try again.');
+      }
+    } catch (err) {
+      alert('Login failed. Please try again.');
     }
   };
 
-  const handleAdminLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  // Admin login using backend authentication
+  const handleAdminLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const username = formData.get('adminUsername');
     const password = formData.get('adminPassword');
-    if (
-      username === adminCredentials.username &&
-      password === adminCredentials.password
-    ) {
-      setIsAdminAuthenticated(true);
-      alert('Admin login successful!');
-    } else {
-      alert('Invalid admin credentials.');
+    try {
+      const res = await fetch('http://127.0.0.1:8000/api/users/login/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: username, password }),
+      });
+      if (res.ok) {
+        const result = await res.json();
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('access', result.access);
+          localStorage.setItem('refresh', result.refresh);
+        }
+        setIsAdminAuthenticated(true);
+        alert('Admin login successful!');
+      } else {
+        const error = await res.json();
+        alert(error.detail || 'Invalid admin credentials.');
+      }
+    } catch (err) {
+      alert('Admin login failed. Please try again.');
     }
   };
 
@@ -147,15 +172,8 @@ const PollsPage = () => {
     setNewContestant({ name: '', bio: '', photoUrl: '' });
   };
 
-  const allowedVoters = [
-    { email: 'voter1@example.com', password: 'password123' },
-    { email: 'voter2@example.com', password: 'password456' },
-  ];
 
-  const adminCredentials = {
-    username: 'admin',
-    password: 'adminpass123',
-  };
+  // adminCredentials can remain for admin login if needed
 
   const contestantSchema = zContestant.object({
     name: zContestant.string().min(2, { message: "Name is required" }),
@@ -311,6 +329,7 @@ const PollsPage = () => {
                         type="text"
                         name="adminUsername"
                         placeholder="Enter admin username"
+                        defaultValue="admin"
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 shadow-sm hover:shadow-md"
                       />
                     </div>
@@ -322,6 +341,7 @@ const PollsPage = () => {
                         type="password"
                         name="adminPassword"
                         placeholder="Enter admin password"
+                        defaultValue="admin123"
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 shadow-sm hover:shadow-md"
                       />
                     </div>
@@ -334,7 +354,8 @@ const PollsPage = () => {
                   </div>
                   <div className="text-center">
                     <p className="text-sm text-gray-500">
-                      Admin credentials required for access
+                      Admin credentials required for access<br />
+                      <span className="font-semibold">Default: admin / admin123</span>
                     </p>
                   </div>
                 </form>

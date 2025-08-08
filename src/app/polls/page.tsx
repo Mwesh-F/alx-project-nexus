@@ -1,6 +1,6 @@
 'use client';
 import dynamic from 'next/dynamic';
-const VotesBarChart = dynamic(() => import('../../components/VotesBarChart'), { ssr: false });
+
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
@@ -96,7 +96,7 @@ export default function PollsPage() {
           </button>
         )}
         <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">
-          Miss Kenya 2023 - Vote for Your Favorite
+          Miss Kenya 2025 - Vote for Your Favorite
         </h1>
         <p className="text-gray-700 mb-8">
           Cast your vote to help crown the next Miss Kenya. Voting closes on September 30th, 2025.
@@ -160,14 +160,7 @@ export default function PollsPage() {
                 </button>
               </Link>
             </div>
-            {/* Votes Chart Visualization */}
-            <div className="bg-white rounded-2xl shadow p-6 mb-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">Live Vote Results</h3>
-              <VotesBarChart
-                labels={contestants.map(c => c.name)}
-                votes={contestants.map(c => c.votes)}
-              />
-            </div>
+            {/* Chart removed: now only on results page */}
             {/* No sign-in prompt needed */}
             {/* Contestant Cards */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">

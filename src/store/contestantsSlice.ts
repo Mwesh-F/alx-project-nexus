@@ -35,6 +35,20 @@ const initialState: ContestantsState = {
       photoUrl: 'miss6.jpg',
       votes: 0,
     },
+    {
+      id: '5',
+      name: 'Aisha Mwangi',
+      bio: 'Eldoret County • 24 years',
+      photoUrl: 'miss7.jpg',
+      votes: 0,
+    },
+    {
+      id: '6',
+      name: 'Makena Njeri',
+      bio: 'Nyeri County • 23 years',
+      photoUrl: 'miss11.jpg',
+      votes: 0,
+    },
   ],
 };
 
