@@ -1,9 +1,8 @@
-import dynamic from 'next/dynamic';
 
-const VotesBarChart = dynamic(() => import('../../components/VotesBarChart'), { ssr: false });
 'use client';
-
-import { useState } from 'react';
+import dynamic from 'next/dynamic';
+const VotesBarChart = dynamic(() => import('../../components/VotesBarChart'), { ssr: false });
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store';
@@ -24,6 +23,26 @@ export default function PollsPage() {
   const [selectedCategory, setSelectedCategory] = useState("miss-kenya");
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
+
+  // Track voted contestant in localStorage
+  const [votedId, setVotedId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('votedContestantId');
+      if (stored) setVotedId(stored);
+    }
+  }, []);
+
+  const handleVote = (id: string) => {
+    if (!votedId) {
+      dispatch(voteForContestant(id));
+      setVotedId(id);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('votedContestantId', id);
+      }
+    }
+  };
 
   // Get contestants from Redux
   const contestants = useSelector((state: RootState) => state.contestants.contestants);
@@ -114,7 +133,7 @@ export default function PollsPage() {
               {paginatedContestants.map((c, idx) => (
                 <div key={c.id} className="bg-white rounded-2xl shadow-lg p-5 flex flex-col items-center relative">
                   <img
-                    src={c.photoUrl}
+                    src={`/${c.photoUrl}`}
                     alt={c.name}
                     className="w-48 h-64 object-cover rounded-xl mb-4"
                   />
@@ -131,10 +150,11 @@ export default function PollsPage() {
                   <div className="flex gap-3 mt-2">
                     {/* No profileUrl in Contestant type, so remove View Profile link */}
                     <button
-                      className="bg-[#FF5A5F] hover:bg-[#E31C5F] text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200"
-                      onClick={() => dispatch(voteForContestant(c.id))}
+                      className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 ${votedId ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-[#FF5A5F] hover:bg-[#E31C5F] text-white'}`}
+                      onClick={() => handleVote(c.id)}
+                      disabled={!!votedId}
                     >
-                      Vote Now
+                      {votedId ? 'Vote Cast' : 'Vote Now'}
                     </button>
                   </div>
                 </div>
