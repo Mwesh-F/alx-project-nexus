@@ -1,147 +1,64 @@
-'use client';
+import Link from 'next/link';
 
-import Link from "next/link";
-import React from "react";
-
-const Footer = () => {
-  const year = React.useMemo(() => new Date().getFullYear(), []);
+export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-white">
-      {/* Main Footer Content */}
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* CrownVote Brand Section */}
-          <div className="lg:col-span-2">
-            <div className="mb-6">
-              <h3 className="text-3xl font-bold text-white mb-4">CrownVote</h3>
-              <p className="text-gray-300 leading-relaxed max-w-md">
-                CrownVote is Kenya's premier digital polling platform where citizens can participate in democratic processes, voice their opinions, and engage in meaningful discussions about national issues. From local community polls to national surveys, CrownVote connects Kenyans with the power to influence change.
-              </p>
-            </div>
+    <footer className="bg-[#F5F5F5] pt-10 pb-2 px-4 mt-16 border-t border-gray-200">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 pb-6">
+        {/* Brand & Social */}
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-[#FF5A5F] text-2xl">{/* crown icon */}
+              <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><path d="M3 17l3.5-7 5.5 7 5.5-7L21 17" stroke="#FF5A5F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><circle cx="3.5" cy="10.5" r="1.5" fill="#FF5A5F"/><circle cx="12" cy="7" r="1.5" fill="#FF5A5F"/><circle cx="20.5" cy="10.5" r="1.5" fill="#FF5A5F"/></svg>
+            </span>
+            <span className="font-bold text-lg text-[#FF5A5F]">CrownVote</span>
           </div>
-
-          {/* Explore Section */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4 text-white">Explore</h4>
-            <ul className="space-y-3">
-              <li>
-                <Link href="/polls/national" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  National Polls
-                </Link>
-              </li>
-              <li>
-                <Link href="/polls/county" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  County Polls
-                </Link>
-              </li>
-              <li>
-                <Link href="/polls/community" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  Community Polls
-                </Link>
-              </li>
-              <li>
-                <Link href="/results/trending" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  Trending Results
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Company Section */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4 text-white">Company</h4>
-            <ul className="space-y-3">
-              <li>
-                <Link href="/about" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  About us
-                </Link>
-              </li>
-              <li>
-                <Link href="/blog" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link href="/careers" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  Careers
-                </Link>
-              </li>
-              <li>
-                <Link href="/community" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  Community
-                </Link>
-              </li>
-              <li>
-                <Link href="/press" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  Press
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Help Section */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4 text-white">Help</h4>
-            <ul className="space-y-3">
-              <li>
-                <Link href="/support" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  Support
-                </Link>
-              </li>
-              <li>
-                <Link href="/help/voting" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  How to Vote
-                </Link>
-              </li>
-              <li>
-                <Link href="/help/create-poll" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  Create a Poll
-                </Link>
-              </li>
-              <li>
-                <Link href="/faq" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  FAQ
-                </Link>
-              </li>
-            </ul>
+          <p className="text-gray-600 text-sm mb-4">Transparent voting platform for Miss Kenya Pageants. Empowering voters and organizers with real-time results.</p>
+          <div className="flex gap-3 text-gray-500 text-xl">
+            <a href="#" aria-label="Facebook"><i className="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Twitter"><i className="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i className="fab fa-instagram"></i></a>
+            <a href="#" aria-label="YouTube"><i className="fab fa-youtube"></i></a>
           </div>
         </div>
-
-        {/* Democratic Participation Notice */}
-        <div className="mt-8 pt-8 border-t border-gray-700">
-          <p className="text-gray-300 text-sm">
-            Your voice matters in Kenya's democratic process.{" "}
-            <Link href="/about/democracy" className="text-blue-400 hover:text-blue-300 underline">
-              Learn more about civic engagement
-            </Link>
-          </p>
+        {/* Quick Links */}
+        <div>
+          <div className="font-bold mb-2">Quick Links</div>
+          <ul className="text-gray-700 text-sm space-y-1">
+            <li><Link href="/">Home</Link></li>
+            <li><Link href="/polls">Vote Now</Link></li>
+            <li><Link href="/results">Live Results</Link></li>
+            <li><Link href="/about">About Us</Link></li>
+            <li><Link href="/contact">Contact</Link></li>
+          </ul>
         </div>
-
-        {/* Bottom Footer Links */}
-        <div className="mt-6 pt-6 border-t border-gray-700">
-          <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-            <div className="flex flex-wrap gap-6 text-sm">
-              <Link href="/terms" className="text-gray-300 hover:text-white transition-colors duration-200">
-                Terms of Service
-              </Link>
-              <Link href="/privacy" className="text-gray-300 hover:text-white transition-colors duration-200">
-                Privacy Policy
-              </Link>
-              <Link href="/cookies" className="text-gray-300 hover:text-white transition-colors duration-200">
-                Cookies Policy
-              </Link>
-              <Link href="/partners" className="text-gray-300 hover:text-white transition-colors duration-200">
-                Partners
-              </Link>
-            </div>
-            <div className="text-sm text-gray-400">
-              &copy; {year} CrownVote Kenya. All rights reserved.
-            </div>
-          </div>
+        {/* Resources */}
+        <div>
+          <div className="font-bold mb-2">Resources</div>
+          <ul className="text-gray-700 text-sm space-y-1">
+            <li><Link href="#">How Voting Works</Link></li>
+            <li><Link href="#">Pageant Calendar</Link></li>
+            <li><Link href="#">Organizer Dashboard</Link></li>
+            <li><Link href="#">FAQ</Link></li>
+            <li><Link href="#">Support</Link></li>
+          </ul>
         </div>
+        {/* Contact & Legal */}
+        <div>
+          <div className="font-bold mb-2">Contact Us</div>
+          <div className="text-gray-700 text-sm mb-2">Nairobi, Kenya</div>
+          <div className="text-gray-700 text-sm mb-2">+254 712 345 678</div>
+          <div className="text-gray-700 text-sm mb-4">info@crownvote.co.ke</div>
+          <div className="font-bold mb-1">Legal</div>
+          <ul className="text-gray-700 text-sm space-y-1">
+            <li><Link href="#">Terms of Service</Link></li>
+            <li><Link href="#">Privacy Policy</Link></li>
+          </ul>
+        </div>
+      </div>
+      <div className="border-t border-gray-300 my-2" />
+      <div className="text-center text-gray-500 text-xs pb-2">
+        © 2025 CrownVote. All rights reserved. Empowering transparent pageant voting across Kenya.
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}
