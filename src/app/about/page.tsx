@@ -24,7 +24,7 @@ export default function AboutPage() {
               ecosystem, ensuring that every voice is heard and every vote matters.
             </p>
             <p className="text-gray-700 mb-6">
-              We're committed to eliminating bias and bringing integrity to the pageant
+              We&apos;re committed to eliminating bias and bringing integrity to the pageant
               voting process through our secure digital platform. By leveraging
               technology, we&apos;ve created a system that is accessible to all Kenyans,
               regardless of their location.
