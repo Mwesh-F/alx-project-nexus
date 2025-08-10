@@ -62,3 +62,4 @@ const contestantsSlice = createSlice({
 
 export const { setContestants, voteForContestant, resetVotes, addContestant } = contestantsSlice.actions;
 export default contestantsSlice.reducer;
+export { initialState };
