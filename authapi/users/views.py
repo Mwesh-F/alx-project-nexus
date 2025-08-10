@@ -11,6 +11,7 @@ class VoteView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
+        from datetime import date
         contestant_id = request.data.get('contestantId')
         if not contestant_id:
             return Response({'detail': 'Contestant ID is required.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -20,14 +21,23 @@ class VoteView(APIView):
         if not contestant:
             return Response({'detail': 'Contestant not found.'}, status=status.HTTP_404_NOT_FOUND)
 
-        # Prevent double voting
-        if request.user.has_voted:
-            return Response({'detail': 'You have already voted.'}, status=status.HTTP_403_FORBIDDEN)
+        # Get client IP address
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+
+        today = date.today()
+        # Check if this IP has already voted today
+        if VoteRecord.objects.filter(ip_address=ip, date=today).exists():
+            return Response({'detail': 'You have already voted today. Please come back tomorrow.'}, status=status.HTTP_403_FORBIDDEN)
 
         contestant.votes += 1
         contestant.save()
-        request.user.has_voted = True
-        request.user.save()
+
+        # Record the vote
+        VoteRecord.objects.create(ip_address=ip, date=today, contestant=contestant)
 
         return Response({'message': 'Vote recorded!'}, status=status.HTTP_200_OK)
 from rest_framework import generics, permissions

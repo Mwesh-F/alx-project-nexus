@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 
-// JWT-based authentication state
 import { RootState } from '../../store';
 import { voteForContestant } from '../../store/contestantsSlice';
 
@@ -21,8 +20,7 @@ const CATEGORIES = [
 
 
 export default function PollsPage() {
-  // Remove sign-in requirement
-  // const isSignedIn = useAuth();
+  // No authentication required
   const [selectedCategory, setSelectedCategory] = useState("miss-kenya");
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
@@ -77,19 +75,7 @@ export default function PollsPage() {
   return (
     <div className="min-h-screen bg-[#FCFCFC] py-10 px-2">
       <div className="max-w-7xl mx-auto">
-        {/* Logout Button */}
-        {typeof window !== 'undefined' && localStorage.getItem('access') && (
-          <button
-            onClick={() => {
-              localStorage.removeItem('access');
-              localStorage.removeItem('refresh');
-              window.location.reload();
-            }}
-            className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg font-semibold float-right mb-4"
-          >
-            Logout
-          </button>
-        )}
+  {/* No authentication or logout required */}
         <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">
           Miss Kenya 2025 - Vote for Your Favorite
         </h1>
