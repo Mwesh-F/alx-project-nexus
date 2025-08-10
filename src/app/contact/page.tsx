@@ -36,7 +36,7 @@ export default function ContactPage() {
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl md:text-4xl font-extrabold text-[#FF5A5F] text-center mb-2">Contact Us</h1>
         <p className="text-gray-700 text-center mb-10">
-          We're here to help with any questions about CrownVote. Reach out to our team for support, feedback, or suggestions.
+            We&apos;re here to help with any questions about CrownVote. Reach out to our team for support, feedback, or suggestions.
         </p>
         <div className="grid md:grid-cols-3 gap-8">
           {/* Contact Form */}
