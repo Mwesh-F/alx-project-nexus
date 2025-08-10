@@ -1,4 +1,6 @@
+
 'use client';
+import Image from 'next/image';
 
 export default function AboutPage() {
   return (
@@ -24,7 +26,7 @@ export default function AboutPage() {
             <p className="text-gray-700 mb-6">
               We're committed to eliminating bias and bringing integrity to the pageant
               voting process through our secure digital platform. By leveraging
-              technology, we've created a system that is accessible to all Kenyans,
+              technology, we&apos;ve created a system that is accessible to all Kenyans,
               regardless of their location.
             </p>
             {/* Values Card */}
@@ -78,9 +80,11 @@ export default function AboutPage() {
           </div>
           {/* Right: Image */}
           <div className="flex-1 flex justify-center items-start">
-            <img
+            <Image
               src="/kenya.jpg"
               alt="Voting Kenya"
+              width={400}
+              height={300}
               className="rounded-xl shadow-lg w-full max-w-md object-cover"
             />
           </div>
@@ -118,9 +122,11 @@ export default function AboutPage() {
             {/* Testimonial Card */}
             <div className="flex-1 bg-[#F7F7F7] rounded-xl shadow p-6">
               <div className="flex items-center mb-3">
-                <img
+                <Image
                   src="/amina-wanjiku.jpg"
                   alt="Amina Wanjiku"
+                  width={48}
+                  height={48}
                   className="w-12 h-12 rounded-full object-cover mr-3 border-2 border-[#FF5A5F]"
                 />
                 <div>
@@ -129,7 +135,7 @@ export default function AboutPage() {
                 </div>
               </div>
               <div className="text-gray-700 italic text-sm">
-                "CrownVote transformed my Miss Kenya experience. The transparent voting gave me confidence that my win was truly supported by Kenyans across the country. It's revolutionized how pageants operate."
+                &quot;CrownVote transformed my Miss Kenya experience. The transparent voting gave me confidence that my win was truly supported by Kenyans across the country. It&apos;s revolutionized how pageants operate.&quot;
               </div>
             </div>
           </div>
@@ -142,9 +148,11 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
             {/* Team Member 1 */}
             <div className="bg-white rounded-2xl shadow p-6 flex flex-col items-center">
-              <img
+              <Image
                 src="/james-mwangi.jpg"
                 alt="James Mwangi"
+                width={128}
+                height={128}
                 className="w-32 h-32 rounded-xl object-cover mb-4"
               />
               <div className="text-lg font-bold text-gray-900">James Mwangi</div>
@@ -159,9 +167,11 @@ export default function AboutPage() {
             </div>
             {/* Team Member 2 */}
             <div className="bg-white rounded-2xl shadow p-6 flex flex-col items-center">
-              <img
+              <Image
                 src="/wanjiku-njeri.jpg"
                 alt="Wanjiku Njeri"
+                width={128}
+                height={128}
                 className="w-32 h-32 rounded-xl object-cover mb-4"
               />
               <div className="text-lg font-bold text-gray-900">Wanjiku Njeri</div>
@@ -175,9 +185,11 @@ export default function AboutPage() {
             </div>
             {/* Team Member 3 */}
             <div className="bg-white rounded-2xl shadow p-6 flex flex-col items-center">
-              <img
+              <Image
                 src="/daniel-ochieng.jpg"
                 alt="Daniel Ochieng"
+                width={128}
+                height={128}
                 className="w-32 h-32 rounded-xl object-cover mb-4"
               />
               <div className="text-lg font-bold text-gray-900">Daniel Ochieng</div>
@@ -191,9 +203,11 @@ export default function AboutPage() {
             </div>
             {/* Team Member 4 */}
             <div className="bg-white rounded-2xl shadow p-6 flex flex-col items-center">
-              <img
+              <Image
                 src="/aisha-mohamed.jpg"
                 alt="Aisha Mohamed"
+                width={128}
+                height={128}
                 className="w-32 h-32 rounded-xl object-cover mb-4"
               />
               <div className="text-lg font-bold text-gray-900">Aisha Mohamed</div>
@@ -226,9 +240,11 @@ export default function AboutPage() {
             </ul>
           </div>
           <div className="flex justify-center">
-            <img
+            <Image
               src="/africa-map.png"
               alt="Africa Map"
+              width={300}
+              height={300}
               className="rounded-2xl shadow-lg w-full max-w-xs object-cover"
             />
           </div>
@@ -241,7 +257,7 @@ export default function AboutPage() {
             <div>
               <h3 className="text-xl font-bold text-[#FF5A5F] mb-2">Join Our Journey</h3>
               <p className="text-gray-700 mb-4">
-                We're always looking for partners, investors, and team members who share our vision for transparent pageant voting.
+                We&apos;re always looking for partners, investors, and team members who share our vision for transparent pageant voting.
               </p>
             </div>
             <a

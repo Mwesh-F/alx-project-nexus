@@ -25,7 +25,7 @@ export default function ContactPage() {
     resolver: zodResolver(contactSchema),
   });
 
-  const onSubmit = async (data: ContactFormData) => {
+  const onSubmit = async () => {
     await new Promise((res) => setTimeout(res, 1000));
     reset();
     alert('Thank you for contacting us! We will get back to you soon.');
