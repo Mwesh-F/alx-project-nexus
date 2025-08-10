@@ -1,5 +1,6 @@
 "use client";
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 const navItems = [
@@ -17,7 +18,7 @@ export default function Navbar() {
 			<div className="flex items-center w-full max-w-7xl mx-auto">
 				{/* Logo */}
 				<Link href="/" className="flex items-center mr-8 shrink-0">
-					<img src="/logo.png" alt="CrownVote Logo" className="h-8 w-auto" />
+					   <Image src="/logo.png" alt="CrownVote Logo" width={80} height={32} className="h-8 w-auto" />
 				</Link>
 				{/* Nav Items */}
 				<ul className="flex flex-1 justify-start gap-8">

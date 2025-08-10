@@ -1,17 +1,11 @@
 'use client';
-import dynamic from 'next/dynamic';
+import Image from 'next/image';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 
 // JWT-based authentication state
-const useAuth = () => {
-  if (typeof window !== 'undefined') {
-    return Boolean(localStorage.getItem('access'));
-  }
-  return false;
-};
 import { RootState } from '../../store';
 import { voteForContestant } from '../../store/contestantsSlice';
 
@@ -48,7 +42,7 @@ export default function PollsPage() {
   const handleVote = async (id: string) => {
     if (!votedId) {
       try {
-        const res = await fetch('http://127.0.0.1:8000/api/users/vote/', {
+  const res = await fetch('https://crownvote.onrender.com/api/users/vote/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -65,7 +59,7 @@ export default function PollsPage() {
           const data = await res.json();
           alert(data.detail || 'Failed to vote. Please try again.');
         }
-      } catch (err) {
+  } catch {
         alert('Failed to vote. Please try again.');
       }
     }
@@ -165,9 +159,11 @@ export default function PollsPage() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {paginatedContestants.map((c, idx) => (
                 <div key={c.id} className="bg-white rounded-2xl shadow-lg p-5 flex flex-col items-center relative">
-                  <img
+                  <Image
                     src={`/${c.photoUrl}`}
                     alt={c.name}
+                    width={192}
+                    height={256}
                     className="w-48 h-64 object-cover rounded-xl mb-4"
                   />
                   <span className="absolute top-4 right-4 bg-[#FF5A5F] text-white font-bold px-3 py-1 rounded-full text-xs">
@@ -241,9 +237,11 @@ export default function PollsPage() {
                   </Link>
                 </div>
               </div>
-              <img
+              <Image
                 src="/flamingo-vote.png"
                 alt="Voting Illustration"
+                width={128}
+                height={128}
                 className="w-32 h-32 object-contain"
               />
             </div>

@@ -2,7 +2,7 @@
 
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
-import { addContestant, removeContestant } from '../../store/contestantsSlice';
+import { addContestant } from '../../store/contestantsSlice';
 import { useForm } from 'react-hook-form';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, CartesianGrid, Legend } from 'recharts';
 import { useState } from 'react';
@@ -56,11 +56,13 @@ function getVotingTrendData(contestants: Contestant[]): { time: string; votes: n
   return trend;
 }
 
+type AddContestantForm = { name: string; bio: string; photoUrl: string };
+
 export default function AdminResultsPage() {
   const contestants = useSelector((state: RootState) => state.contestants.contestants);
   const dispatch = useDispatch();
   const [showAdd, setShowAdd] = useState(false);
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset } = useForm<AddContestantForm>();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [lastUpdated] = useState(new Date());
 
@@ -72,14 +74,14 @@ export default function AdminResultsPage() {
   const votingTrendData = getVotingTrendData(contestants);
   const totalVotes = contestants.reduce((sum, c) => sum + c.votes, 0);
 
-  const onAdd = (data: any) => {
+  const onAdd = (data: AddContestantForm) => {
     dispatch(addContestant(data));
     reset();
     setShowAdd(false);
   };
 
-  const onRemove = (id: string | number) => {
-    dispatch(removeContestant(String(id)));
+  const onRemove = () => {
+    // dispatch(removeContestant(String(id))); // Function not implemented in contestantsSlice
   };
 
   return (
@@ -172,9 +174,11 @@ export default function AdminResultsPage() {
                 <h3 className="font-bold text-gray-900 mb-2">Current Leader</h3>
                 <div className="flex flex-col items-center">
                   <div className="relative">
-                    <img
+                    <Image
                       src={`/${currentLeader.photoUrl}`}
                       alt={currentLeader.name}
+                      width={128}
+                      height={128}
                       className="w-32 h-32 object-cover rounded-xl mb-2 border-4 border-[#FF5A5F]"
                     />
                     <span className="absolute top-2 right-2 bg-[#FF5A5F] text-white text-xs font-bold px-2 py-1 rounded-full shadow">
@@ -198,11 +202,13 @@ export default function AdminResultsPage() {
             <div className="bg-[#FCFCFC] rounded-2xl shadow p-6">
               <h3 className="font-bold text-gray-900 mb-4">Top Contenders</h3>
               <ul>
-                {topContenders.map((c, idx) => (
+                {topContenders.map((c) => (
                   <li key={c.id} className="flex items-center mb-4">
-                    <img
+                    <Image
                       src={`/${c.photoUrl}`}
                       alt={c.name}
+                      width={40}
+                      height={40}
                       className="w-10 h-10 rounded-full object-cover mr-3 border-2 border-[#FF5A5F]"
                     />
                     <div className="flex-1">
@@ -213,6 +219,23 @@ export default function AdminResultsPage() {
                     <span className="ml-1 text-xs text-gray-500">%</span>
                   </li>
                 ))}
+                  {topContenders.map((c) => (
+                    <li key={c.id} className="flex items-center mb-4">
+                      <Image
+                        src={`/${c.photoUrl}`}
+                        alt={c.name}
+                        width={40}
+                        height={40}
+                        className="w-10 h-10 rounded-full object-cover mr-3 border-2 border-[#FF5A5F]"
+                      />
+                      <div className="flex-1">
+                        <div className="font-semibold text-gray-900">{c.name}</div>
+                        <div className="text-xs text-gray-500">Contestant #{c.id} • {c.bio}</div>
+                      </div>
+                      <span className="text-[#FF5A5F] font-bold text-lg">{Math.round((c.votes / totalVotes) * 100) || 0}</span>
+                      <span className="ml-1 text-xs text-gray-500">%</span>
+                    </li>
+                  ))}
               </ul>
             </div>
           </div>
@@ -240,7 +263,7 @@ export default function AdminResultsPage() {
                 <span>{c.name}</span>
                 <button
                   className="bg-red-500 hover:bg-red-700 text-white px-3 py-1 rounded text-xs"
-                  onClick={() => onRemove(c.id)}
+                  onClick={onRemove}
                 >
                   Remove
                 </button>

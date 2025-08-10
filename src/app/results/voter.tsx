@@ -26,7 +26,7 @@ export default function VoterResultsPage() {
       <div className="bg-white rounded-2xl shadow p-6">
         <h2 className="text-lg font-bold mb-4">Order of Contestant Votes</h2>
         <ol className="list-decimal ml-6">
-          {sortedContestants.map((c, idx) => (
+          {sortedContestants.map((c) => (
             <li key={c.id} className="mb-2 flex items-center justify-between">
               <span>{c.name}</span>
               <span className="font-bold text-[#FF5A5F]">{c.votes}</span>

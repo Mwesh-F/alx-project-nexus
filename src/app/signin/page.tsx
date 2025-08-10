@@ -12,7 +12,7 @@ export default function SignInPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    const res = await fetch('http://127.0.0.1:8000/api/users/login/', {
+  const res = await fetch('https://crownvote.onrender.com/api/users/login/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -63,7 +63,7 @@ export default function SignInPage() {
           </button>
         </form>
         <div className="text-center mt-4 text-sm">
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <Link href="/signup" className="text-[#FF5A5F] font-bold underline">Sign Up</Link>
         </div>
       </div>

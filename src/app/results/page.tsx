@@ -1,9 +1,9 @@
 
 "use client";
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-import { voteForContestant } from '../../store/contestantsSlice';
+// import { voteForContestant } from '../../store/contestantsSlice';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 import Image from 'next/image';
 import React from 'react';
@@ -12,7 +12,7 @@ const COLORS = ['#FF5A5F', '#00A699', '#FC642D', '#484848', '#007A87', '#F8A800'
 
 const PollsPage = () => {
   const contestants = useSelector((state: RootState) => state.contestants.contestants);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   if (!Array.isArray(contestants) || contestants.length === 0) {
     return <div className="p-10 text-center text-gray-500">No results to display yet.</div>;
   }
@@ -130,7 +130,7 @@ const PollsPage = () => {
             </div>
             <div className="text-center">
               <div className="font-bold text-lg">{leader.name}</div>
-              <div className="text-xs text-gray-500 mb-2">Contestant #{leader.id} · {leader.county || 'Nairobi County'}</div>
+              <div className="text-xs text-gray-500 mb-2">Contestant #{leader.id} · Nairobi County</div>
               <div className="text-xs text-gray-600 mb-3">Leading in 14 counties with strong support from youth voters aged 18-25.</div>
               <button className="w-full bg-[#FF5A5F] hover:bg-[#e14c50] text-white font-semibold py-2 rounded transition">Vote for {leader.name.split(' ')[0]}</button>
             </div>
@@ -140,7 +140,7 @@ const PollsPage = () => {
           <div className="bg-white rounded-lg shadow p-6">
             <h3 className="font-bold text-base mb-4">Top Contenders</h3>
             <div className="flex flex-col gap-3">
-              {sorted.slice(1, 5).map((c, idx) => (
+              {sorted.slice(1, 5).map((c) => (
                 <div key={c.id} className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200">
                     <Image
@@ -153,7 +153,7 @@ const PollsPage = () => {
                   </div>
                   <div className="flex-1">
                     <div className="font-semibold text-sm">{c.name}</div>
-                    <div className="text-xs text-gray-500">Contestant #{c.id} · {c.county || 'County'}</div>
+                    <div className="text-xs text-gray-500">Contestant #{c.id} · County</div>
                   </div>
                   <div className="font-bold text-[#FF5A5F] text-lg">{((c.votes / totalVotes) * 100).toFixed(0)}<span className="text-xs align-super">%</span></div>
                 </div>

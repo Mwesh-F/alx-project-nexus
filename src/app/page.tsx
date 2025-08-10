@@ -190,7 +190,7 @@ export default function HomePage() {
 						<Image src="/james-mwangi.jpg" alt="James Mwangi" width={64} height={64} className="rounded-full mb-3 object-cover" />
 						<div className="font-bold text-lg">James Mwangi</div>
 						<div className="text-gray-500 text-sm mb-3">Miss Nairobi Organizer</div>
-						<p className="text-gray-700 text-sm mb-4">"CrownVote has transformed how we run our pageant voting. The transparency has eliminated controversies, and engagement has increased by 300% since we started using the platform."</p>
+						   <p className="text-gray-700 text-sm mb-4">&quot;CrownVote has transformed how we run our pageant voting. The transparency has eliminated controversies, and engagement has increased by 300% since we started using the platform.&quot;</p>
 						<div className="flex gap-1">
 							<span className="text-[#FF5A5F] text-xl">★</span>
 							<span className="text-[#FF5A5F] text-xl">★</span>
@@ -204,7 +204,7 @@ export default function HomePage() {
 						<Image src="/aisha-mohamed.jpg" alt="Sophia Akinyi" width={64} height={64} className="rounded-full mb-3 object-cover" />
 						<div className="font-bold text-lg">Sophia Akinyi</div>
 						<div className="text-gray-500 text-sm mb-3">Miss Kenya 2022</div>
-						<p className="text-gray-700 text-sm mb-4">"Winning through CrownVote gave my victory legitimacy. The transparent voting process meant everyone could see the results in real-time, making my crowning moment even more special."</p>
+						   <p className="text-gray-700 text-sm mb-4">&quot;Winning through CrownVote gave my victory legitimacy. The transparent voting process meant everyone could see the results in real-time, making my crowning moment even more special.&quot;</p>
 						<div className="flex gap-1">
 							<span className="text-[#FF5A5F] text-xl">★</span>
 							<span className="text-[#FF5A5F] text-xl">★</span>
@@ -218,7 +218,7 @@ export default function HomePage() {
 						<Image src="/daniel-ochieng.JPG" alt="Daniel Omondi" width={64} height={64} className="rounded-full mb-3 object-cover" />
 						<div className="font-bold text-lg">Daniel Omondi</div>
 						<div className="text-gray-500 text-sm mb-3">Pageant Voter</div>
-						<p className="text-gray-700 text-sm mb-4">"I love being able to vote for my favorite contestants and see the results instantly. The contestant profiles helped me make informed decisions about who truly deserved my vote."</p>
+						   <p className="text-gray-700 text-sm mb-4">&quot;I love being able to vote for my favorite contestants and see the results instantly. The contestant profiles helped me make informed decisions about who truly deserved my vote.&quot;</p>
 						<div className="flex gap-1">
 							<span className="text-[#FF5A5F] text-xl">★</span>
 							<span className="text-[#FF5A5F] text-xl">★</span>
